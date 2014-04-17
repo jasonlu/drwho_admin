@@ -1,0 +1,24 @@
+development: &default
+  #adapter: sqlite3
+  #encoding: utf8
+  #database: db/dev.sqlite3
+
+  adapter: mysql2
+  encoding: utf8
+  database: onlynet_dev
+  host: localhost
+  username: onlynet
+  password: '#EDC4rfv'
+
+
+test: &TEST
+  <<: *default
+  database: onlynet_test
+
+production: &PROD
+  adapter: mysql2
+  encoding: utf8
+  database: onlynet_prod
+  host: localhost
+  username: onlynet
+  password: '#EDC4rfv'

@@ -1,0 +1,47 @@
+
+<table class="table table-striped">
+  <thead>
+    <tr class="sortable">
+      <th class="span4 created-at" data-sorting="created-at">購物單時間</th>
+      <th class="span2 order-number" data-sorting="order-number">購物單編號</th>
+      <th class="span1 payment-price" data-sorting="payment-price">金額</th>
+      <th class="span2 payment-status" data-sorting="payment-status">狀態</th>
+      <th class="span2 serial_id" data-sorting="serial_id">會員編號</th>
+      <th class="span2 fullname" data-sorting="fullname">訂購人</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @orders.each do |order| %>
+      <% next if order.user.nil? %>
+      <tr class="status-paid-<%= order.payment_status %> <%= order.payment_status == 0 ? 'warning' : '' %>">
+        <td><%= order.created_at.localtime %></td>
+        <td><%= order.order_number %></td>
+        <td><%= order.payment_price %></td>
+        <td><%= order.payment_status == 0 ? '未付款' : '已付款' %></td>
+        <td><%= order.user.serial_id %></td>
+        <td><%= order.user.fullname %></td>
+        <td>
+          <!--
+          <%= link_to order_path(order.id), :title => '檢視', :class => 'btn btn-mini' do %>
+          <i class="icon-eye-open"></i> 檢視
+          <% end %>
+          -->
+          <%= link_to edit_order_path(order.id), :title => '編輯', :class => 'btn btn-mini' do %>
+          <i class="icon-edit"></i> 編輯
+          <% end %>
+          <%= link_to order_paid_path(order.id), :title => '已付款', :class => 'btn btn-mini', method: :patch do %>
+          <i class="icon-ok"></i> 已付款
+          <% end %>
+          <%= link_to order_path(order.id), :title => '刪除', :class => 'btn btn-mini btn-danger', method: :delete, data: { confirm: 'Are you sure?' } do %>
+          <i class="icon-trash"></i> 刪除
+          <% end %>
+         </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @orders %>
+
