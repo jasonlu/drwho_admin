@@ -103,7 +103,7 @@ namespace :deploy do
       run_locally "rsync -vr --exclude='.DS_Store' config/initializers/secret_token.rb #{user}@#{server.host}:#{shared_path}/config/initializers/"
       run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/files/* #{user}@#{server.host}:#{static_shared_path}/files"
       run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/uploads/* #{user}@#{server.host}:#{static_shared_path}/uploads"
-      run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/doc/* #{user}@#{server.host}:#{static_shared_path}/doc"
+      #run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/docs/* #{user}@#{server.host}:#{static_shared_path}/docs"
     end
   end
   
@@ -115,6 +115,7 @@ namespace :deploy do
     
     run "ln -nfs #{static_shared_path}/uploads #{release_path}/public/uploads"
     run "ln -nfs #{static_shared_path}/files #{release_path}/public/files"
+    run "ln -nfs #{static_shared_path}/docs #{release_path}/public/docs"
     
     run "ln -nfs #{shared_path}/assets #{release_path}/assets"
     run "ln -nfs #{shared_path}/temp #{release_path}/public/temp"
@@ -147,7 +148,7 @@ namespace :assets do
 end
 
 
-after "deploy:create_symlink", "deploy:copy_files", "deploy:symlink_shared","deploy:cleanup", "bundle:install"
+after "deploy:create_symlink", "deploy:copy_files", "deploy:symlink_shared","deploy:cleanup"#, "bundle:install"
 #before "deploy:symlink_shared", "deploy:copy_files"
 #after "deploy:symlink_shared", "deploy:assets:precompile"
 #before "deploy:assets:precompile", "bundle:install"
