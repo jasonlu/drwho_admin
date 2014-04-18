@@ -27,7 +27,7 @@ class NewsController < ApplicationController
 
     if @news.save
       #redirect_to @news, notice: 'News was successfully created.'
-      redirect_to admin_news_index_path, notice: 'News was successfully updated.'
+      redirect_to news_index_path, notice: 'News was successfully updated.'
     else
       render action: 'new'
     end
@@ -38,7 +38,7 @@ class NewsController < ApplicationController
     if @news.update!(admin_news_params)
       #render :json => {:params => admin_news_params }
       #redirect_to edit_admin_news_path, notice: 'News was successfully updated.'
-      redirect_to admin_news_index_path, notice: 'News was successfully updated.'
+      redirect_to news_index_path, notice: 'News was successfully updated.'
     else
       render action: 'edit'
     end
@@ -47,7 +47,7 @@ class NewsController < ApplicationController
   # DELETE /admin/news/1
   def destroy
     @news.destroy
-    redirect_to admin_news_index_path, notice: 'News was successfully destroyed.'
+    redirect_to news_index_path, notice: 'News was successfully destroyed.'
   end
 
   private

@@ -55,7 +55,7 @@ class MessagesController < ApplicationController
       end
 
       #render :json => {:raw => params,:params => admin_message_params, :receiver => @receiver_ids }
-      redirect_to admin_messages_path, notice: 'Message was successfully created.'
+      redirect_to messages_path, notice: 'Message was successfully created.'
     else
       render action: 'new'
     end
@@ -64,7 +64,7 @@ class MessagesController < ApplicationController
   # PATCH/PUT /admin/messages/1
   def update
     if @message.update(admin_message_params)
-      redirect_to admin_messages_path, notice: 'Message was successfully updated.'
+      redirect_to messages_path, notice: 'Message was successfully updated.'
     else
       render action: 'edit'
     end

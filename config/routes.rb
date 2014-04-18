@@ -1,6 +1,8 @@
 DrwhoAdmin::Application.routes.draw do
 
-  mount Ckeditor::Engine => '/ckeditor'
+  
+
+  #mount Ckeditor::Engine => '/ckeditor'
   devise_for :users, :controllers => { :registrations => "admin_registrations", :sessions => "admin_sessions" }  
   
   get "users/search", :to => 'users#search', :as => :search_user
@@ -35,6 +37,10 @@ DrwhoAdmin::Application.routes.draw do
   patch "config", :to => 'site_configs#update'
   get "mfg", :to => 'home#edit', :as => :mfg
   patch "mfg", :to => 'home#update'
+
+  get "uploads", :to => 'upload_files#index'
+  post "uploads", :to => 'upload_files#create'
+  resources :upload_files
   
   root :to => "home#dashboard"
 

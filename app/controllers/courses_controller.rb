@@ -27,7 +27,7 @@ class CoursesController < ApplicationController
     @course.start_at = "2000-01-01 00:00:00"
     @course.end_at = @course.start_at
     @course.save
-    redirect_to admin_courses_url, notice: 'Course was successfully hide.'
+    redirect_to courses_url, notice: 'Course was successfully hide.'
   end
 
   def unhide
@@ -110,7 +110,7 @@ class CoursesController < ApplicationController
   def update
     if @course.update(admin_course_params)
       #redirect_to @course, notice: 'Course was successfully updated.'
-      redirect_to admin_courses_url, notice: 'Course was successfully updated.'
+      redirect_to courses_url, notice: 'Course was successfully updated.'
     else
       render action: 'edit'
     end
@@ -119,7 +119,7 @@ class CoursesController < ApplicationController
   # DELETE /admin/courses/1
   def destroy
     @course.destroy
-    redirect_to admin_courses_url, notice: 'Course was successfully destroyed.'
+    redirect_to courses_url, notice: 'Course was successfully destroyed.'
   end
 
   private

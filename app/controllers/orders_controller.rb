@@ -47,7 +47,7 @@ class OrdersController < ApplicationController
     if @order.update(admin_order_params)
       make_paid(@order.id) if @order.payment_status == 1
 
-      redirect_to edit_admin_order_path(@order), notice: 'Order was successfully updated.'
+      redirect_to edit_order_path(@order), notice: 'Order was successfully updated.'
     else
       #render action: 'edit'
     end
@@ -59,7 +59,7 @@ class OrdersController < ApplicationController
     @order = UserOrder.find(id)
     if @order.update_attribute(:payment_status, 1)
       make_paid(id)
-      redirect_to admin_orders_path, notice: 'Order was successfully updated.'
+      redirect_to orders_path, notice: 'Order was successfully updated.'
     else
       #render action: 'edit'
     end
@@ -68,7 +68,7 @@ class OrdersController < ApplicationController
   # DELETE /admin/orders/1
   def destroy
     @order.destroy
-    redirect_to admin_orders_url, notice: 'Order was successfully destroyed.'
+    redirect_to orders_url, notice: 'Order was successfully destroyed.'
   end
 
   private

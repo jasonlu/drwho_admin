@@ -25,7 +25,7 @@ class PagesController < ApplicationController
 
     if @page.save
       #redirect_to @page, notice: 'Page was successfully created.'
-      redirect_to admin_pages_path, notice: 'Page was successfully updated.'
+      redirect_to pages_path, notice: 'Page was successfully updated.'
     else
       render action: 'new'
     end
@@ -35,7 +35,7 @@ class PagesController < ApplicationController
   def update
     if @page.update!(admin_page_params)
       #redirect_to edit_admin_page_path, notice: 'Page was successfully updated.'
-      redirect_to admin_pages_path, notice: 'Page was successfully updated.'
+      redirect_to pages_path, notice: 'Page was successfully updated.'
     else
       render action: 'edit'
     end
@@ -44,7 +44,7 @@ class PagesController < ApplicationController
   # DELETE /admin/pages/1
   def destroy
     @page.destroy
-    redirect_to admin_pages_path, notice: 'Page was successfully destroyed.'
+    redirect_to pages_path, notice: 'Page was successfully destroyed.'
   end
 
   private

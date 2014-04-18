@@ -1,4 +1,11 @@
-<%= form_for [:admin, @page] do |f| %>
+<script src="/ckeditor/ckeditor.js"></script>
+<script src="/ckeditor/adapters/jquery.js"></script>
+<script>
+$(document).ready(function(){
+  $(".ckeditor").ckeditor();
+});
+</script>
+<%= form_for @page do |f| %>
   <% if @page.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@page.errors.count, "error") %> prohibited this page from being saved:</h2>
@@ -16,7 +23,7 @@
     <%= label :key, '網址' %>
     <%= f.text_field :key %>
     <%= label :body, '內文' %>
-    <%= f.cktext_area :body, :class => 'ckeditor' %>
+    <%= f.text_area :body, :class => 'ckeditor' %>
   </fieldset>
 
   <div class="form-actions">

@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
-gem 'rails', '4.0.0'
-gem 'rails-i18n'
-
+gem 'rails', '~> 4.0.0'
+gem 'rails-i18n', '~> 4.0.0'
 gem 'protected_attributes'
 
+gem 'mysql2', '~> 0.3.0'
 
 #group :assets do
   gem 'sass'
@@ -24,25 +24,25 @@ gem 'devise-i18n'
 gem 'kaminari'
 gem 'kaminari-bootstrap'
 #gem 'ckeditor_rails'
-gem "paperclip"
-gem 'ckeditor'
+#gem "paperclip"
+#gem 'ckeditor', '~> 4.0.11'
 gem "seed_dump"
 
 gem 'thin'
 gem 'country_select'
-#gem 'by_star', :git => "git://github.com/radar/by_star"
 gem 'rubyzip', '< 1.0.0'
 gem 'roo'
 
+#gem 'by_star', :git => "git://github.com/radar/by_star"
 #gem 'sunspot_rails'
+#gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in development
 
-group :development do
-  #gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in development
-  gem 'capistrano'
+group :development do  
+  gem 'capistrano', '~> 2.15.0'
   gem 'magic_encoding'
   gem 'quiet_assets'
 end
-gem 'mysql2'
+
 group :production do
   
 end

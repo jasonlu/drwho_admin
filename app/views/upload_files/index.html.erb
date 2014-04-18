@@ -1,0 +1,40 @@
+<style>
+.upload-image-container {
+  height: 200px;
+}
+.upload-image-container img {
+  max-height: 200px;
+  display: block;
+}
+
+.upload-image-container .file-item {
+  display: block;
+}
+
+</style>
+<h1>Listing upload_files</h1>
+
+<% @upload_files.each do |upload_file| %>
+      <div class="span3 upload-image-container">
+        <a href="<%= upload_file[:path] %>" class="file-item">
+          <img src="<%= upload_file[:path] %>" alt="">
+        </a>
+        
+        <%= link_to 'Destroy', upload_file, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </div>
+    <% end %>
+
+<%= link_to 'New Upload file', new_upload_file_path %>
+
+
+<script>
+$(document).ready(function(){
+  var funcNum = <%= params[:CKEditorFuncNum] %>;
+  $("a.file-item").click(function(){
+    var fileUrl = $(this).attr("href");
+    window.opener.CKEDITOR.tools.callFunction(funcNum,fileUrl);
+    window.close();
+    return false;
+  });
+});
+</script>

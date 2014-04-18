@@ -14,5 +14,5 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= #require ckeditor-jquery
-//= require ckeditor/init
+//= #require ckeditor/init
 //= require table-sorting

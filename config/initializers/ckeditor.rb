@@ -10,6 +10,7 @@ if Object.const_defined?("Ckeditor")
     # Allowed image file types for upload.
     # Set to nil or [] (empty array) for all file types
     config.image_file_types = ["jpg", "jpeg", "png", "gif", "tiff"]
+    #validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png"] }
 
     # Allowed attachment file types for upload.
     # Set to nil or [] (empty array) for all file types

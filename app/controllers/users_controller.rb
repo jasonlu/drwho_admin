@@ -46,7 +46,7 @@ class UsersController < ApplicationController
 
     if @user.save
       #redirect_to @user, notice: 'User was successfully created.'
-      redirect_to admin_users_path, notice: 'User was successfully updated.'
+      redirect_to users_path, notice: 'User was successfully updated.'
     else
       render action: 'new'
     end

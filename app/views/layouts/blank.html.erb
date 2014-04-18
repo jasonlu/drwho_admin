@@ -5,10 +5,10 @@
   <meta name="robots" content="noindex,nofollow">
   <title>Backstage | <%= @config[:title]%></title>
   
-  <%= stylesheet_link_tag    "/css/bootstrap.min", :media => "all"  %>
-  <%= stylesheet_link_tag    "admin/application", :media => "all" %>
-  <%= javascript_include_tag "admin/application" %>
-  <%= javascript_include_tag "/js/bootstrap.min" %>
+  <%= stylesheet_link_tag    "/stylesheets/bootstrap.min", :media => "all"  %>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "/javascripts/bootstrap.min" %>
   <%= javascript_include_tag "/assets/" + params[:controller] %>
   <%= csrf_meta_tags %>
 </head>

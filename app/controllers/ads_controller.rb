@@ -25,7 +25,7 @@ class AdsController < ApplicationController
     @ad = Ad.new(ad_params)
 
     if @ad.save
-      redirect_to admin_ads_path, notice: 'Ad was successfully created.'
+      redirect_to ads_path, notice: 'Ad was successfully created.'
     else
       render action: 'new'
     end
@@ -34,7 +34,7 @@ class AdsController < ApplicationController
   # PATCH/PUT /ads/1
   def update
     if @ad.update(ad_params)
-      redirect_to admin_ads_path, notice: 'Ad was successfully updated.'
+      redirect_to ads_path, notice: 'Ad was successfully updated.'
     else
       render action: 'edit'
     end
@@ -43,7 +43,7 @@ class AdsController < ApplicationController
   # DELETE /ads/1
   def destroy
     @ad.destroy
-    redirect_to admin_ads_path, notice: 'Ad was successfully destroyed.'
+    redirect_to ads_path, notice: 'Ad was successfully destroyed.'
   end
 
   private

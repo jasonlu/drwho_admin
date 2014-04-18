@@ -101,18 +101,11 @@ namespace :deploy do
       #run_locally "rsync -vr --exclude='.DS_Store' public/ckeditor_assets #{user}@#{server.host}:#{shared_path}/"
       run_locally "rsync -vr --exclude='.DS_Store' config/database.yml #{user}@#{server.host}:#{shared_path}/config/"
       run_locally "rsync -vr --exclude='.DS_Store' config/initializers/secret_token.rb #{user}@#{server.host}:#{shared_path}/config/initializers/"
+      run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/files/* #{user}@#{server.host}:#{static_shared_path}/files"
+      run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/uploads/* #{user}@#{server.host}:#{static_shared_path}/uploads"
+      run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/doc/* #{user}@#{server.host}:#{static_shared_path}/doc"
     end
   end
-
-  task :download_files do
-    find_servers_for_task(current_task).each do |server|
-      run_locally "rsync -vr #{user}@#{server.host}:#{global_shared_path}/doc/mfg.html doc/mfg.html"
-      run_locally "rsync -vr #{user}@#{server.host}:#{global_shared_path}/uploads public/"
-      run_locally "rsync -vr #{user}@#{server.host}:#{global_shared_path}/ckeditor_assets public/"
-      run_locally "rsync -vr #{user}@#{server.host}:#{global_shared_path}/files public/"
-    end
-  end
-
   
 
   desc "symlink shared files between releases"
@@ -120,10 +113,8 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{shared_path}/config/initializers/secret_token.rb #{release_path}/config/initializers/secret_token.rb"
     
-    run "ln -nfs #{global_shared_path}/doc/mfg.html #{release_path}/doc/mfg.html"
-    run "ln -nfs #{global_shared_path}/uploads #{release_path}/public/uploads"
-    run "ln -nfs #{global_shared_path}/ckeditor_assets #{release_path}/public/ckeditor_assets"
-    run "ln -nfs #{global_shared_path}/files #{release_path}/public/files"
+    run "ln -nfs #{static_shared_path}/uploads #{release_path}/public/uploads"
+    run "ln -nfs #{static_shared_path}/files #{release_path}/public/files"
     
     run "ln -nfs #{shared_path}/assets #{release_path}/assets"
     run "ln -nfs #{shared_path}/temp #{release_path}/public/temp"
@@ -131,8 +122,6 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/pid #{release_path}/tmp/pid"
     run "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
 
-    #deploy.copy_files
-        # run "ln -nfs #{shared_path}/log/production.log #{release_path}/log/production.log"
   end
 
 
@@ -158,7 +147,7 @@ namespace :assets do
 end
 
 
-after "deploy:create_symlink", "deploy:copy_files", "deploy:symlink_shared", "bundle:install", "db:migrate", "deploy:cleanup"
+after "deploy:create_symlink", "deploy:copy_files", "deploy:symlink_shared","deploy:cleanup", "bundle:install"
 #before "deploy:symlink_shared", "deploy:copy_files"
 #after "deploy:symlink_shared", "deploy:assets:precompile"
 #before "deploy:assets:precompile", "bundle:install"
