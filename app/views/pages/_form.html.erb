@@ -1,10 +1,4 @@
-<script src="/ckeditor/ckeditor.js"></script>
-<script src="/ckeditor/adapters/jquery.js"></script>
-<script>
-$(document).ready(function(){
-  $(".ckeditor").ckeditor();
-});
-</script>
+
 <%= form_for @page do |f| %>
   <% if @page.errors.any? %>
     <div id="error_explanation">

@@ -35,8 +35,8 @@ DrwhoAdmin::Application.routes.draw do
 
   get "config", :to => 'site_configs#index', :as => :site_configs
   patch "config", :to => 'site_configs#update'
-  get "mfg", :to => 'home#edit', :as => :mfg
-  patch "mfg", :to => 'home#update'
+  get "mfg/edit", :to => 'home#edit', :as => :mfg
+  patch "mfg/update", :to => 'home#update'
 
   get "uploads", :to => 'upload_files#index'
   post "uploads", :to => 'upload_files#create'

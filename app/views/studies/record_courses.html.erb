@@ -1,4 +1,11 @@
 <h3><%= @user.fullname %> 課程進度學習表</h3>
+<% if @study.starts_at.blank?  %>
+<p class="alert">
+  此課程尚未開始
+</p>
+<% else %>
+
+
 <table class="table table-striped table-study">
   <colgroup>
     <col class="light-blue-bg">
@@ -19,13 +26,11 @@
     <span>完成至少一個測驗，才能進行下一天的進度</span></th>
   </tr>
   <% for i in 0..@study.course.duration_days - 1 do
+
     do_link = true
     due_day = @study.starts_at + i
-    #due_day = due_day.to_datetime
     last_second = due_day.to_s + ' 23:59:59'
     due_day = DateTime.parse(last_second)
-    #puts due_day
-    #due_day = due_day.to_s + " 23:59:59"
     today = Date.today
     day = i + 1
     
@@ -52,8 +57,6 @@
     end
 
     link_reading_str = completed_date_reading.localtime.strftime("%-m / %-d") unless completed_date_reading.nil?
-    #link_reading_str = completed_date_reading.localtime if !completed_date_reading.nil?
-
 
     status_str = '正常'
     status_class = 'normal'
@@ -73,13 +76,7 @@
     <td class="day">第<%= day %>天</td>
     <td class="suggested-day"><%= due_day.strftime("%-m / %-d")  %></td>
     <td class="status"><%= status_str %></td>
-    <td class="read">
-      <% if do_link %>
-      <%= link_to link_reading_str, study_read_path(@study.uuid, :day => i + 1) %>
-      <% else %>
-      <%= link_reading_str %>
-      <% end %>
-    </td>
+    <td class="read"><%= link_reading_str %></td>
     <td class="nopadding practice">
       <table class="practice">
       <tr>
@@ -87,14 +84,13 @@
         <% do_link = false if j > practices.length || completed_date_reading.nil? %>
         <td>
           <% if do_link %>
-          <%= link_to practices[j].nil? ? (j + 1).to_chinese : practices[j].created_at.strftime("%-m / %-d"), study_practice_path(@study.uuid, :day => day, :phase => j) %>
+          <%= practices[j].nil? ? (j + 1).to_chinese : practices[j].created_at.strftime("%-m / %-d") %>
           <% else %>
           <%= (j + 1).to_chinese %>
           <% end %>
         </td>
         <% do_link = true %>
         <% end %>
-        
       </tr>
       </table>
     </td>
@@ -117,7 +113,7 @@
                   </div>
                   <div class="score">
                   <% if do_link %>
-                    <%= link_to exams[index].nil? ? "測驗" : exams[index].score, study_exam_path(@study.uuid, :day => day, :phase => index) %>
+                    <%= exams[index].nil? ? "測驗" : exams[index].score %>
                   <% else %>
                     <%= exams[index].nil? ? '-' : exams[index].score %>
                   <% end %>
@@ -135,3 +131,4 @@
   </tr>
   <% end %>
 </table>
+<% end %>

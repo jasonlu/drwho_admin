@@ -1,10 +1,10 @@
-<%= form_for [:admin, @user] do |f| %>
+<%= form_for @user do |f| %>
   <fieldset>
     <%= label :email, 'email' %>
     <%= f.text_field :email %>
     <%= label :password, '密碼' %>
     <%= f.password_field :password %>
-    <span class="help-block">Leave blank if not intend to change password</span>
+    <span class="help-block alert">如果不需要變更密碼，請不要輸入任何內容</span>
 
     <%= f.fields_for :user_profile do |p| %>
       <%= label :firstname, '姓' %>

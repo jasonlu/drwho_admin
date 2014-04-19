@@ -38,6 +38,10 @@ class Course < ActiveRecord::Base
     self.serial =  'C' + self.category_id.to_s.rjust(3, '0') + 'N' + serial
   end
 
+  def briefing
+    self.read_attribute(:briefing)[0..160] + "..."
+  end
+
   def activate?
     if self.end_at == self.start_at
       return false

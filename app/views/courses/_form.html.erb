@@ -55,9 +55,17 @@
   <% if params[:action] == 'new' %>
     <%= f.label :course_items_file, '課程內容 XLSX 檔案' %>
     <%= f.file_field :course_items_file, :class =>'file', :accept => '.xlsx', :data => {:type => 'file'} %>
-    
+    <p class="alert alert-danger">
+      請使用 Excel 2010 以後的檔案格式 XLSX ，請勿使用舊版 XLS 格式
+    </p>
     <%= f.label :course_items_audio_zip_file, '課程音訊 zip 檔案' %>
     <%= f.file_field :course_items_audio_zip_file, :class =>'file', :accept => '.zip', :data => {:type => 'file'} %>
+    <p class="alert">
+      請將課程音訊檔案打包成 zip 檔案，zip 檔案中的目錄格式將不被保留，因此請勿使用多層目錄。<br>
+      請同時包含 ogg 與 m4a 格式的音訊檔案以確保瀏覽器相容性<br>
+      <br>
+      一旦完成新增課程，將無法修改課程內的題目與音訊檔案 
+    </p>
 
   <% else %>
 

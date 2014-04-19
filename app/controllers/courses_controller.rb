@@ -83,6 +83,7 @@ class CoursesController < ApplicationController
       end
 
       uploaded_io = params[:course][:course_items_audio_zip_file]
+      cmd = ""
       unless uploaded_io.nil?
         file_path = Rails.root.join('tmp', 'course_item_audio_temp.zip')
         File.open(file_path, 'wb') do |file|
@@ -97,7 +98,7 @@ class CoursesController < ApplicationController
 
 
 
-      #render :json => {:params => admin_course_params, :ci => @rows}
+      #render :json => {:params => admin_course_params, :ci => cmd}
       redirect_to @course, notice: t('create_course_successful')
     else
       #render :json => {:error => true, :error_detail => @course.errors, :data => admin_course_params, :raw_data => params}

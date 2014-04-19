@@ -5,15 +5,20 @@ class HomeController < ApplicationController
   end
 
   def edit
-    File.open(File.join(Rails.root, "doc", "mfg.html"), "r+") do |f|
-      @mfg = f.read
+    path = File.join(Rails.root, "public", "docs", "mfg.html")
+    if File.file?(path)
+      File.open(path, "r+") do |f|
+        @mfg = f.read
+      end
+    else
+      @mfg = ""
     end
-
   end
 
   def update
 
-    File.open(File.join(Rails.root, "doc", "mfg.html"), "w") do |f|
+    path = File.join(Rails.root, "public", "docs", "mfg.html")
+    File.open(path, "w+") do |f|
       f.write(params[:content])
     end
     redirect_to :back

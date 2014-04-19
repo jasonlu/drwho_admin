@@ -1,5 +1,5 @@
 class CourseItem < ActiveRecord::Base
-  has_attached_file :audio, :url => "/files/:class/:attachment/:basename.:extension"
+  #has_attached_file :audio, :url => "/files/:class/:attachment/:basename.:extension"
   alias_attribute :english, :answer
   alias_attribute :translation, :question
   base_path = "/files/audio/"
