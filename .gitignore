@@ -16,6 +16,7 @@
 *.DS_Store*
 /public/assets/*
 /public/uploads/*
+/public/docs/*
 /public/ckeditor_assets/*
 /public/temp/*
 /public/files/*
