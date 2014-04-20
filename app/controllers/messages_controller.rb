@@ -1,5 +1,5 @@
 class MessagesController < ApplicationController
-  before_action :set_admin_message, only: [:show, :edit, :update, :destroy]
+  before_action :set_message, only: [:show, :edit, :update, :destroy]
   
 
   # GET /admin/messages
@@ -31,7 +31,7 @@ class MessagesController < ApplicationController
 
   # POST /admin/messages
   def create
-    @message = Message.new(admin_message_params)
+    @message = Message.new(message_params)
     @receiver_users = nil
     if @receivers.include?('everyone')
       #@receiver_users.push(User.everyone)
@@ -53,8 +53,6 @@ class MessagesController < ApplicationController
         inbox.save
         
       end
-
-      #render :json => {:raw => params,:params => admin_message_params, :receiver => @receiver_ids }
       redirect_to messages_path, notice: 'Message was successfully created.'
     else
       render action: 'new'
@@ -63,7 +61,7 @@ class MessagesController < ApplicationController
 
   # PATCH/PUT /admin/messages/1
   def update
-    if @message.update(admin_message_params)
+    if @message.update(message_params)
       redirect_to messages_path, notice: 'Message was successfully updated.'
     else
       render action: 'edit'
@@ -73,17 +71,17 @@ class MessagesController < ApplicationController
   # DELETE /admin/messages/1
   def destroy
     @message.destroy
-    redirect_to admin_messages_url, notice: 'Message was successfully destroyed.'
+    redirect_to messages_url, notice: 'Message was successfully destroyed.'
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_admin_message
+    def set_message
       @message = Message.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
-    def admin_message_params
+    def message_params
       @receivers = params[:receivers]
       params[:message][:user_id] = current_user.id
       params.require(:message).permit(:id, :subject, :content, :user_id)

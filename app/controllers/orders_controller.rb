@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :set_admin_order, only: [:show, :edit, :update, :destroy]
+  before_action :set_order, only: [:show, :edit, :update, :destroy]
 
   # GET /admin/orders
   def index
@@ -33,7 +33,7 @@ class OrdersController < ApplicationController
 
   # POST /admin/orders
   def create
-    @order = UserOrder.new(admin_order_params)
+    @order = UserOrder.new(order_params)
 
     if @order.save
       redirect_to @order, notice: 'Order was successfully created.'
@@ -44,7 +44,7 @@ class OrdersController < ApplicationController
 
   # PATCH/PUT /admin/orders/1
   def update
-    if @order.update(admin_order_params)
+    if @order.update(order_params)
       make_paid(@order.id) if @order.payment_status == 1
 
       redirect_to edit_order_path(@order), notice: 'Order was successfully updated.'
@@ -73,14 +73,14 @@ class OrdersController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_admin_order
+    def set_order
       @order = UserOrder.find(params[:id])
       @user = @order.user
       @courses = Course.find(@order.courses.split(','))
     end
 
     # Only allow a trusted parameter "white list" through.
-    def admin_order_params
+    def order_params
       params.require(:user_order).permit(:payment_status, :payment_price, :note)
     end
 

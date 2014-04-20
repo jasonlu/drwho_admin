@@ -1,5 +1,5 @@
 class NewsController < ApplicationController
-  before_action :set_admin_news, only: [:show, :edit, :update, :destroy]
+  before_action :set_news, only: [:show, :edit, :update, :destroy]
 
   # GET /admin/news
   def index
@@ -23,10 +23,9 @@ class NewsController < ApplicationController
 
   # POST /admin/news
   def create
-    @news = News.new(admin_news_params)
+    @news = News.new(news_params)
 
     if @news.save
-      #redirect_to @news, notice: 'News was successfully created.'
       redirect_to news_index_path, notice: 'News was successfully updated.'
     else
       render action: 'new'
@@ -35,9 +34,7 @@ class NewsController < ApplicationController
 
   # PATCH/PUT /admin/news/1
   def update
-    if @news.update!(admin_news_params)
-      #render :json => {:params => admin_news_params }
-      #redirect_to edit_admin_news_path, notice: 'News was successfully updated.'
+    if @news.update!(news_params)
       redirect_to news_index_path, notice: 'News was successfully updated.'
     else
       render action: 'edit'
@@ -52,12 +49,12 @@ class NewsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_admin_news
+    def set_news
       @news = News.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
-    def admin_news_params
+    def news_params
       params[:news][:user_id] = current_user.id
       params.require(:news).permit(:id, :content, :title, :user_id, :publish_at, :close_at)
     end

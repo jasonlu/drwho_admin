@@ -1,5 +1,5 @@
 class StudiesController < ApplicationController
-  before_filter :set_admin_users, :only => [:set_start_day, :record, :wrong_list]
+  before_filter :set_users, :only => [:set_start_day, :record, :wrong_list]
   
   # GET /studies
   # GET /studies.json
@@ -116,7 +116,7 @@ class StudiesController < ApplicationController
 
 
   private
-  def set_admin_users
+  def set_users
     sort = params[:sort]
     dir = params[:dir]
 

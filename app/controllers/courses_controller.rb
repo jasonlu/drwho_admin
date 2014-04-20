@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_admin_course, only: [:show, :edit, :update, :destroy, :hide, :unhide]
+  before_action :set_course, only: [:show, :edit, :update, :destroy, :hide, :unhide]
 
   # GET /admin/courses
   def index
@@ -52,7 +52,7 @@ class CoursesController < ApplicationController
   def create
     #params[:serial] = Time.now.to_i
 
-    @course = Course.new(admin_course_params)
+    @course = Course.new(course_params)
 
 
     if @course.save
@@ -94,14 +94,8 @@ class CoursesController < ApplicationController
         wasGood = system( cmd )
         File.delete(file_path.to_s)
       end
-
-
-
-
-      #render :json => {:params => admin_course_params, :ci => cmd}
       redirect_to @course, notice: t('create_course_successful')
     else
-      #render :json => {:error => true, :error_detail => @course.errors, :data => admin_course_params, :raw_data => params}
       render action: 'new', notice: @course.errors
     end
     
@@ -109,8 +103,7 @@ class CoursesController < ApplicationController
 
   # PATCH/PUT /admin/courses/1
   def update
-    if @course.update(admin_course_params)
-      #redirect_to @course, notice: 'Course was successfully updated.'
+    if @course.update(course_params)
       redirect_to courses_url, notice: 'Course was successfully updated.'
     else
       render action: 'edit'
@@ -125,17 +118,12 @@ class CoursesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_admin_course
+    def set_course
       @course = Course.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
-    def admin_course_params
-      
-
-      #render :json => params
-
-      #params[:admin_course]
+    def course_params
       if(params[:course][:category_id] == '' && !params[:category][:title].blank?)
         cat = Category.new(params[:category])
         cat.save!

@@ -1,6 +1,6 @@
 class Course < ActiveRecord::Base
 
-  before_validation :generate_serial
+  #before_validation :generate_serial
   before_create :generate_uuid
 
   has_many :course_items, :dependent => :delete_all, :inverse_of => :course

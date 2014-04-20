@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_admin_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /admin/users
   def index
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
   # POST /admin/users
   def create
-    @user = User.new(admin_user_params)
+    @user = User.new(user_params)
 
     if @user.save
       #redirect_to @user, notice: 'User was successfully created.'
@@ -56,11 +56,9 @@ class UsersController < ApplicationController
   def update
     model = controller_name.classify
     @user.update_attributes(:password => params[:user][:password]) unless params[:user][:password].blank?
-    if @user.update!(admin_user_params)
+    if @user.update!(user_params)
      User.where("roles_mask IS NULL OR roles_mask = 0").update_all(:type => 'User')
      User.where("roles_mask > 0").update_all(:type => 'Admin')
-      #redirect_to edit_admin_user_path, notice: 'User was successfully updated.'
-      #redirect_to admin_users_path, notice: 'User was successfully updated.'
       redirect_to :controller => controller_name, :action => 'index', notice: "#{model} was successfully updated."
     else
       render action: 'edit'
@@ -133,12 +131,12 @@ class UsersController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_admin_user
+    def set_user
       @user = User.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
-    def admin_user_params
+    def user_params
       params.require(:user).permit(:id, :email, :roles => [], user_profile_attributes: [:id, :firstname, :lastname, :id_number, :dob, :gender, :education, :country, :register_address, :address])
       #params[:user]
     end

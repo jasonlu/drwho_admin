@@ -18,10 +18,9 @@
 <fieldset>
   <%= f.label :title, '課程名稱' %>
   <%= f.text_field :title %>
-  <!--
+  
   <%= f.label :serial, '編號' %>
   <%= f.text_field :serial %>
-  -->
 
   <%= f.label :category, '課程分類' %>
   <%= f.select :category_id, Category.all.collect {|p| [ p.title, p.id ] }, :prompt => '- 新增 -' %>

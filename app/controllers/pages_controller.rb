@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  before_action :set_admin_page, only: [:show, :edit, :update, :destroy]
+  before_action :set_page, only: [:show, :edit, :update, :destroy]
 
   # GET /admin/pages
   def index
@@ -21,10 +21,9 @@ class PagesController < ApplicationController
 
   # POST /admin/pages
   def create
-    @page = Page.new(admin_page_params)
+    @page = Page.new(page_params)
 
-    if @page.save
-      #redirect_to @page, notice: 'Page was successfully created.'
+    if @page.save      
       redirect_to pages_path, notice: 'Page was successfully updated.'
     else
       render action: 'new'
@@ -33,8 +32,7 @@ class PagesController < ApplicationController
 
   # PATCH/PUT /admin/pages/1
   def update
-    if @page.update!(admin_page_params)
-      #redirect_to edit_admin_page_path, notice: 'Page was successfully updated.'
+    if @page.update!(page_params)
       redirect_to pages_path, notice: 'Page was successfully updated.'
     else
       render action: 'edit'
@@ -49,12 +47,12 @@ class PagesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_admin_page
+    def set_page
       @page = Page.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
-    def admin_page_params
+    def page_params
       params[:page]
     end
 end
