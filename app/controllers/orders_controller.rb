@@ -9,13 +9,13 @@ class OrdersController < ApplicationController
 
     case sort
     when 'fullname'
-      sort = 'user_profiles.lasttname'
+      sort = 'user_profiles.lastname'
     when 'payment_status', 'payment_price', 'order_number'
     else
       sort = 'id'
     end
 
-    @orders = UserOrder.where.not(:payment_method => -1).order(sort + ' ' + dir).page(params[:page])
+    @orders = UserOrder.joins(:user => :user_profile).where.not(:payment_method => -1).order(sort + ' ' + dir).page(params[:page])
   end
 
   # GET /admin/orders/1

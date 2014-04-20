@@ -1,0 +1,23 @@
+<% if @category.errors.any? %>
+<ul class="alert alert-error">
+  <% @category.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+  <% end %>
+</ul>
+<% end %>
+
+<%= form_for(@category) do |f| %>
+<legend><%= @category.title %></legend>
+<fieldset>
+  <%= f.label :title, '分類名稱' %>
+  <%= f.text_field :title %>
+</fieldset>
+
+  <div class="form-actions">
+    <%= link_to categories_path, :class => 'btn btn', :data => {:disable_with => "Please wait..." } do %>
+    <i class="icon-arrow-left"></i> 返回至分類列表
+    <% end %>
+
+    <%= f.submit :class => 'btn btn-primary pull-right', :data => { :method => "put", :disable_with => "Saving..." } %>  
+  </div>
+<% end %>

@@ -1,0 +1,41 @@
+<table class="table table-striped">
+  <thead>
+    <tr class="sortable">
+      <th class="span2 id" data-sorting="id">編號</th>
+      <th class="span2 title" data-sorting="category">分類名稱</th>
+      <th class="span2 categorys-length" data-sorting="categorys_length">課程數量</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @categories.each do |category| %>
+      <tr>
+        <td><%= category.id %></td>
+        <td><%= category.title %></td>
+        
+        <td><%= category.courses.length %></td>
+        <td>
+          
+          <%= link_to category_url(category.id), :title => '檢視', :class => 'btn btn-mini' do %>
+          <i class="icon-eye-open"></i> 檢視
+          <% end %>
+          
+          <%= link_to edit_category_path(category.id), :title => '編輯', :class => 'btn btn-mini' do %>
+          <i class="icon-edit"></i> 編輯
+          <% end %>
+
+          <%= link_to category_path(category.id), :title => '刪除', :class => 'btn btn-mini btn-danger', method: :delete, data: { confirm: 'Are you sure?' } do %>
+          <i class="icon-trash"></i> 刪除
+          <% end %>
+         </td>
+      </tr>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to '新增分類', new_category_path, :class => 'btn btn-primary' %>
+<%= paginate @categories %>

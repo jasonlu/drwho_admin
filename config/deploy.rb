@@ -33,7 +33,7 @@ namespace :db do
   
   desc "Migrate DB"
   task :migrate do
-    run "cd #{current_path} && rake db:migrate RAILS_ENV=#{rails_env}"
+    run "cd #{current_path} && bundle exec rake db:migrate RAILS_ENV=#{rails_env}"
   end
   
   task :dump do
@@ -148,7 +148,7 @@ namespace :assets do
 end
 
 
-after "deploy:create_symlink", "deploy:copy_files", "deploy:symlink_shared","deploy:cleanup"#, "bundle:install"
+after "deploy:create_symlink", "deploy:copy_files", "deploy:symlink_shared","deploy:cleanup", "bundle:install", "db:migrate"
 #before "deploy:symlink_shared", "deploy:copy_files"
 #after "deploy:symlink_shared", "deploy:assets:precompile"
 #before "deploy:assets:precompile", "bundle:install"

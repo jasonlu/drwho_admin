@@ -9,7 +9,7 @@ DrwhoAdmin::Application.routes.draw do
   get "admins/search", :to => 'admins#search', :as => :search_admin
   resources :users
   resources :admins
-  
+  resources :categories
   resources :ads  
   match "study/set_start_day/(:user_id)", :to => 'studies#set_start_day', via: [:get, :post, :patch], :as => :set_start_day
   match "study/record/(:user_id)", :to => 'studies#record', via: [:get, :post], :as => :study_record

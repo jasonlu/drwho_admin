@@ -11,6 +11,9 @@
   <li class="<%= 'active' if controller.controller_name == 'courses' %>">
     <%= link_to '課程管理', courses_path %>
   </li>
+  <li class="<%= 'active' if controller.controller_name == 'categories' %>">
+    <%= link_to '課程類別管理', categories_path %>
+  </li>
   <% end %>
 
   <% if can? :manage, Message %>

@@ -12,8 +12,8 @@
     <% @news.each do |news| %>
       <tr>
         <td><%= news.title %></td>
-        <td><%= news.created_at.localtime %></td>
-        <td><%= news.updated_at.localtime %></td>
+        <td><%= news.created_at.localtime.strftime("%Y/%m/%d %H:%m:%S") %></td>
+        <td><%= news.updated_at.localtime.strftime("%Y/%m/%d %H:%m:%S") %></td>
         
         <td>
 

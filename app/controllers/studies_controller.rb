@@ -88,10 +88,10 @@ class StudiesController < ApplicationController
     unless(params[:user_id].nil?)
       user_id = params[:user_id]
       @user = User.find(user_id)
-      @records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:user_id => @user.id).group('course_item_id').order('cnt DESC').page(params[:page])
+      @records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:user_id => @user.id, :wrong => true).group('course_item_id').order('cnt DESC').page(params[:page])
       render "wrong_list_user"
     else
-      @records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_item_id').order('cnt DESC').page(params[:page]) 
+      @records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:wrong => true).group('course_item_id').order('cnt DESC').page(params[:page]) 
       render "wrong_list_all"
     end
   end

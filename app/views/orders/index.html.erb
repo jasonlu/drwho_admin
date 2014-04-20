@@ -2,7 +2,7 @@
 <table class="table table-striped">
   <thead>
     <tr class="sortable">
-      <th class="span4 created-at" data-sorting="created-at">購物單時間</th>
+      <th class="span3 created-at" data-sorting="created-at">購物單時間</th>
       <th class="span2 order-number" data-sorting="order-number">購物單編號</th>
       <th class="span1 payment-price" data-sorting="payment-price">金額</th>
       <th class="span2 payment-status" data-sorting="payment-status">狀態</th>
@@ -16,7 +16,7 @@
     <% @orders.each do |order| %>
       <% next if order.user.nil? %>
       <tr class="status-paid-<%= order.payment_status %> <%= order.payment_status == 0 ? 'warning' : '' %>">
-        <td><%= order.created_at.localtime %></td>
+        <td><%= order.created_at.localtime.strftime("%Y/%m/%d %H:%m:%S") %></td>
         <td><%= order.order_number %></td>
         <td><%= order.payment_price %></td>
         <td><%= order.payment_status == 0 ? '未付款' : '已付款' %></td>

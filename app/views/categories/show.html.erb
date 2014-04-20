@@ -1,0 +1,54 @@
+<h3><%= @category.title %></h3>
+<table class="table table-striped">
+  <thead>
+    <tr class="sortable">
+      <th class="span2 serial" data-sorting="serial">編號</th>
+      <th class="span2 category" data-sorting="category">課程分類</th>
+      <th class="title" data-sorting="title">課程名稱</th>
+      
+      <th class="span2 unit" data-sorting="unit">單元</th>
+      <th class="span2 price" data-sorting="price">價格</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @category.courses.each do |course| %>
+      <tr>
+        <td><%= course.serial %></td>
+        <td><%= course.category.title %></td>
+        <td><%= course.title %></td>
+        
+        <td><%= course.unit %></td>
+        <td><%= course.price %></td>
+        <td>
+          <!--
+          <%= link_to course_url(course.id), :title => '檢視', :class => 'btn btn-mini' do %>
+          <i class="icon-eye-open"></i> 檢視
+          <% end %>
+          -->
+          <%= link_to edit_course_path(course.id), :title => '編輯', :class => 'btn btn-mini' do %>
+          <i class="icon-edit"></i> 編輯
+          <% end %>
+          
+          <% if course.activate? %>
+            <%= link_to hide_course_path(course), :title => '隱藏', :class => 'btn btn-mini btn-warning', :method => 'patch' do %>
+            <i class="icon-eye-close"></i> 隱藏
+            <% end %>
+          <% else %>
+            <%= link_to unhide_course_path(course), :title => '顯示', :class => 'btn btn-mini btn-success', :method => 'patch' do %>
+            <i class="icon-eye-close"></i> 顯示
+            <% end %>
+          <% end %>
+
+          <%= link_to course_path(course.id), :title => '刪除', :class => 'btn btn-mini btn-danger', method: :delete, data: { confirm: 'Are you sure?' } do %>
+          <i class="icon-trash"></i> 刪除
+          <% end %>
+         </td>
+      </tr>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to 'Edit', edit_category_path(@category) %> |
+<%= link_to 'Back', categories_path %>
