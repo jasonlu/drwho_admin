@@ -1,4 +1,15 @@
 <%= form_for @user do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <fieldset>
     <%= label :email, 'email' %>
     <%= f.text_field :email %>
@@ -12,10 +23,10 @@
 
       <%= label :firstname, '名' %>
       <%= p.text_field :firstname %>
-
+<!--
       <%= label :id_number, 'ID Number' %>
       <%= p.text_field :id_number %>
-
+-->
       <%= label :dob, '出生日期' %>
       <%= p.date_field :dob %>
 
@@ -26,15 +37,21 @@
       <%= p.select :education, ['研究所', '大學', '高中職', '國中', '小學'] %>
 
       <%= label :country, '國籍' %>
-      <%= p.country_select :country, nil, :iso_codes => true %>
+      <%= p.country_select :country, ["tw", "cn"], :iso_codes => true %>
 
-      <%= label :register_address, '戶籍地址' %>
+      <%= label :register_address, '戶籍地城市' %>
       <%= p.text_field :register_address %>
 
-      <%= label :address, '聯絡地址' %>
+      <%= label :address, '目前居住地城市' %>
       <%= p.text_field :address %>
+
+    <% end %>
+    <label>賬號狀態</label>
+    <%= f.label :activated do %>
+      <%= f.check_box :activated %> 已啟用
     <% end %>
 
+    <%= f.label :role, '管理員身份' %>
     <% for role in User::ROLES %>
       
       <%= label_tag "user_roles_#{role}", :class => 'checkbox' do %>
@@ -43,10 +60,8 @@
 
     <% end %>
     <%= hidden_field_tag "user[roles][]", "" %>
-    
-   
   </fieldset>
   <div class="form-actions">
-    <%= f.submit :class => 'btn btn-primary', :data => { :method => "put", :disable_with => "Saving..." } %>
+    <%= f.submit "儲存", :class => 'btn btn-primary', :data => { :disable_with => "Saving..." } %>
   </div>
 <% end %>

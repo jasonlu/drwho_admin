@@ -26,11 +26,12 @@
 
 <ul class="nav nav-tabs nav-stacked block-2">
   <li class="nav-header">會員管理</li>
-  <% if can? :manage, User %>
+  <% if can? :manage_user, User %>
   <li class="<%= 'active' if controller.controller_name == 'users' %>">
     <%= link_to '會員管理', users_path %>
   </li>
-
+  <% end %>
+  <% if can? :manage_user, Message %>
   <li class="<%= 'active' if controller.controller_name == 'messages' %>">
     <%= link_to '會員訊息管理', messages_path %>
   </li>
@@ -55,7 +56,7 @@
 
 <ul class="nav nav-tabs nav-stacked block-3">
   <li class="nav-header">行銷管理</li>
-  <% if can? :manage, SiteConfig %>
+  <% if can? :manage, Page %>
   <li class="<%= 'active' if controller.controller_name == 'home' %>">
     <%= link_to '首頁管理', mfg_path %>
   </li>
@@ -76,7 +77,6 @@
 </ul>
 
 
-
 <ul class="nav nav-tabs nav-stacked block-4">
   <li class="nav-header">網站管理</li>  
   <% if can? :manage, SiteConfig %>
@@ -85,7 +85,7 @@
   </li>
   <% end %>
 
-  <% if can? :manage, Admin %>
+  <% if can? :manage_admin, User, :type => 'Admin' %>
   <li class="<%= 'active' if controller.controller_name == 'admins' %>">
     <%= link_to '網站管理員管理', admins_path %>
   </li>

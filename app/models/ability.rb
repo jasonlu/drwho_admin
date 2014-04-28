@@ -19,7 +19,20 @@ class Ability
   end
 
   def user_manager
-    can :manage, User
+    can :manage_user, User, :type => 'User'
+    can :manage, Message
+    #can :manage_admin, User, :type => 'User'
+
+    #cannot :manage, User, :type => 'Admin'
+  end
+
+  def manager
+  end
+
+  def admin_manager
+    can :manage_user, User, :type => 'User'
+    can :manage, Message
+    can :manage_admin, User, :type => 'Admin'
   end
 
   def order_manager
@@ -30,8 +43,10 @@ class Ability
     can :manage, Message
   end
 
-  def manager
-    can :read, :all
+  def marketing_manager
+    can :manage, Ad
+    can :manage, Page
+    can :manage, Seo
   end
 
   def admin

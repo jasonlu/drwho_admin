@@ -1,27 +1,22 @@
 class NewsController < ApplicationController
   before_action :set_news, only: [:show, :edit, :update, :destroy]
 
-  # GET /admin/news
   def index
     sort = params[:sort]
     dir = params[:dir]
     @news = News.all.order(sort + ' ' + dir).page(params[:page])
   end
 
-  # GET /admin/news/1
   def show
   end
-
-  # GET /admin/news/new
+  
   def new
     @news = News.new
   end
 
-  # GET /admin/news/1/edit
   def edit
   end
 
-  # POST /admin/news
   def create
     @news = News.new(news_params)
 

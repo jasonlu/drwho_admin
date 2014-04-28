@@ -7,10 +7,16 @@
 <table class="table table-striped">
   <tr class="sortable">
     <th class="span2 id" data-sorting="id">UID</th>
-    <th class="span2 serial" data-sorting="serial">帳戶號碼</th>
+    <th class="span2 serial" data-sorting="serial">會員編號</th>
     <th class="email" data-sorting="email">Email</th>
+    <th class="span2 activated" data-sorting="activated">已啟用</th>
     <th class="span2 lastname" data-sorting="lastname">姓</th>
     <th class="span2 firstname" data-sorting="firstname">名</th>
+    <th class="span2 gender" data-sorting="gender">性別</th>
+    <th class="span2 dob" data-sorting="dob">出生年</th>
+    <th class="span2 dob_month" data-sorting="dob_month">出生月</th>
+    <th class="span2 education" data-sorting="education">教育程度</th>
+    <th class="span2 country" data-sorting="country">國籍</th>
     <th class="span3"> </th>
   </tr>
   <% @users.each do |u| %>
@@ -18,8 +24,14 @@
     <td><%= u.id  %></td>
     <td><%= u.serial_id  %></td>
     <td><%= u.email  %></td>
+    <td><%= u.confirmed_at.blank? ? "否" : "是"  %></td>
     <td><%= u.profile.lastname  %></td>
     <td><%= u.profile.firstname  %></td>
+    <td><%= u.profile.gender == 1 ? "男性" : "女性"  %></td>
+    <td><%= u.profile.dob.year  %></td>
+    <td><%= u.profile.dob.month  %></td>
+    <td><%= u.profile.education  %></td>
+    <td><%= u.profile.country  %></td>
     <td>
       <!--
       <%= link_to user_path(u), :title => '檢視', :class => 'btn btn-mini' do %>
@@ -35,7 +47,11 @@
     </td>
   </tr>
   <% end %>
-
 </table>
-
 <%= paginate @users %>
+
+<!--
+<%= link_to new_user_path, :class => "btn btn-primary" do %>
+  <i class="icon-plus icon-white"> </i>新增會員
+<% end %>
+-->

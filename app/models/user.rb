@@ -20,9 +20,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :recoverable, :trackable, :validatable, :confirmable, :rememberable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :roles, :remember_me, :user_profile_attributes
+  attr_accessible :email, :password, :password_confirmation, :roles, :remember_me, :user_profile_attributes, :confirmed_at, :confirmation_token
 
-  ROLES = %w[admin manager course_manager order_manager user_manager banned]
+  ROLES = %w[admin marketing_manager course_manager order_manager user_manager admin_manager]
   # attr_accessible :title, :body
 
   scope :male, -> {joins(:user_profile).where("user_profiles.gender = 1")}
@@ -33,9 +33,8 @@ class User < ActiveRecord::Base
     #joins(:user_profile).where("MONTH(user_profiles.dob) = ?", this_month )
     all
   }
-  scope :everyone, -> {all}
 
-  def roles=(roles)
+  def roles=(roles)  #scope :everyone, -> {all}
     self.roles_mask = (roles & ROLES).map { |r| 2**ROLES.index(r) }.inject(0, :+)
   end
 
@@ -61,5 +60,14 @@ class User < ActiveRecord::Base
   def serial_id
     (1000065535 + self.id).to_s
   end
+
+  def activated
+    if self.confirmed_at.blank?
+      return false
+    else
+      return true;
+    end
+  end
+
 
 end
