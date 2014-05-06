@@ -13,7 +13,7 @@ DrwhoAdmin::Application.routes.draw do
   resources :studies
 
   get "study/set_start_day", :to => 'studies#set_start_day', :as => :set_start_day
-  patch "study/update_start_day/:study_id", :to => 'studies#update_start_day', :as => :update_start_day
+  patch "study/update_start_day/(:study_id)", :to => 'studies#update_start_day', :as => :update_start_day
 
   get "records/", :to => 'records#index', :as => :records
   get "record/:study_id", :to => 'records#show', :as => :record
