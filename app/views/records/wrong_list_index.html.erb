@@ -1,0 +1,55 @@
+<!-- <h3>所有學生 全部課程易錯排行榜</h3> -->
+
+<ul class="breadcrumb">
+  <li class="<%= "active" if params[:search][:category_id].blank? %>"><%= link_to "全部易錯派行榜", record_wrong_lists_path %></a>
+    <% unless params[:search][:category_id].blank? %>
+    <span class="divider">/</span>
+    <% end %>
+  </li>
+  
+  <% unless params[:search][:category_id].blank? %>
+  <li class="<%= "active" if params[:search][:course_title].blank? %>" >
+    <%= link_to @category.title, record_wrong_lists_path(:search => {:category_id => @category.id}) %>
+    <% unless params[:search][:course_title].blank? %>
+    <span class="divider">/</span>
+    <% end %>
+  </li>
+  <% end %>
+  
+  <% unless params[:search][:course_title].blank? %>
+  <li class="<%= "active" if params[:search][:unit].blank? %>" >
+    <%= link_to params[:search][:course_title], record_wrong_lists_path(:search => {:category_id => params[:search][:category_id], :course_title => params[:search][:course_title]}) %>
+    <% unless params[:search][:unit].blank? %>
+    <span class="divider">/</span>
+    <% end %>
+  </li>
+  <% end %>
+
+  <% unless params[:search][:unit].blank? %>
+  <li class="active">
+    <%= params[:search][:unit] %>
+  </li>
+  <% end %>  
+</ul>
+
+<%= form_tag record_wrong_lists_path, :method => :get, :id => "course-search-form", :class => "form-inline" do %>
+<%= label_tag "search[category_id]", "課程類別" %>
+<%= select_tag "search[category_id]", options_from_collection_for_select(@category_all, :id, :title, params['search']['category_id']), :prompt => '- 請選擇 -' %>
+<%= label_tag "search[course_title]", "課程名稱" %>
+<%= select_tag "search[course_title]", options_from_collection_for_select(@course_titles, :title, :title, params['search']['course_title']), :prompt => '- 請選擇 -' %>
+<%= label_tag "search[unit]", "單元數" %>
+<%= select_tag "search[unit]", options_from_collection_for_select(@course_units, :unit, :unit, params['search']['unit']), :prompt => '- 請選擇 -' %>
+
+<%= submit_tag("搜尋", :class => "btn") %>
+<% end %>
+
+<script>
+$(document).ready(function(){
+$("#course-search-form select").change(function(){
+  $("#course-search-form").submit();
+});
+
+});
+</script>
+
+<%= render "wrong_list" %>

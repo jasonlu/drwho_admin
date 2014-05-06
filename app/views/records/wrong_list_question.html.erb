@@ -1,0 +1,27 @@
+
+<ul class="breadcrumb">
+  <li><%= link_to "全部易錯派行榜", record_wrong_lists_path %></a> <span class="divider">/</span></li>
+  <li><%= link_to @course.category.title, record_wrong_lists_path(:search => {:category_id => @course.category_id}) %></a> <span class="divider">/</span></li>
+  <li><%= link_to @course.title, record_wrong_lists_path(:search => {:category_id => @course.category_id, :course_title => @course.title}) %> <span class="divider">/</span></li>
+  <li><%= link_to @course.unit, record_wrong_lists_path(:search => {:category_id => @course.category_id, :course_title => @course.title, :unit => @course.unit }) %> <span class="divider">/</span></li>
+  <li class="active"><%= @course_item.question %> 的易錯排行榜</li>
+</ul>
+
+<table class="table table-striped" >
+  <tr class="row sortable">
+    <th class="span2 id" data-sorting="id">會員編號</th>
+    <th class="span2 fullname" data-sorting="fullname">姓名</th>
+    <th class=" cnt" data-sorting="cnt" >測驗錯誤次數</th>
+    
+  </tr>
+  <% @records.each do |record| %>
+  <tr class="row">
+    <td class="span2"><%= link_to record.user.serial_id, user_path(record.user.id) %></td>
+    <td class="span2"><%= link_to record.user.fullname, user_path(record.user.id) %></td>
+    <td class=""><%= record.cnt %></td>
+    
+  </tr>
+  <% end %>
+</table>
+
+<%= paginate @records %>

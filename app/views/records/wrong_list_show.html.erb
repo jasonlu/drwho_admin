@@ -1,0 +1,18 @@
+<h3><%= @study.user.fullname %> 課程易錯排行榜</h3>
+<%= render "study_detail_table", :breadcrumb_text => "課程易錯排行榜" %>
+
+<table class="table table-striped">
+  <tr class="row sortable">
+    <th class="question" data-sorting="question">易錯單字、片語、或例句</th>
+    <th class="span2 cnt" data-sorting="cnt">測驗錯誤次數</th>
+    
+  </tr>
+  <% @records.each do |record| %>
+  <tr class="row">
+    <td class=""><%= record.course_item.english %></td>
+    <td class="span2"><%= record.cnt %></td>
+    
+  </tr>
+  <% end %>
+</table>
+<%= paginate @records %>

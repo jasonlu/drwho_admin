@@ -9,10 +9,19 @@ DrwhoAdmin::Application.routes.draw do
   resources :users
   resources :admins
   resources :categories
-  resources :ads  
-  match "study/set_start_day/(:user_id)", :to => 'studies#set_start_day', via: [:get, :post, :patch], :as => :set_start_day
-  match "study/record/(:user_id)", :to => 'studies#record', via: [:get, :post], :as => :study_record
-  match "study/wrong_list/(:user_id)", :to => 'studies#wrong_list', via: [:get, :post], :as => :study_wrong_list  
+  resources :ads
+  resources :studies
+
+  get "study/set_start_day", :to => 'studies#set_start_day', :as => :set_start_day
+  patch "study/update_start_day/:study_id", :to => 'studies#update_start_day', :as => :update_start_day
+
+  get "records/", :to => 'records#index', :as => :records
+  get "record/:study_id", :to => 'records#show', :as => :record
+
+
+  get "records/wrong_list/question/:course_item_id", :to => 'records#wrong_list_question', :as => :record_wrong_list_question
+  get "records/wrong_lists", :to => 'records#wrong_list_index', :as => :record_wrong_lists
+  get "records/wrong_list/:study_id", :to => 'records#wrong_list_show', :as => :record_wrong_list
   
 
   get "orders/new", :to => 'orders#edit', :as => :new_order

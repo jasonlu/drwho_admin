@@ -1,0 +1,31 @@
+<table class="table table-striped" >
+  <tr class="row sortable">
+    <th class="span2 category" data-sorting="category">課程分類</th>
+    <th class="span2 title" data-sorting="title">課程名稱</th>
+    <th class="span2 unit" data-sorting="unit">單元數</th>
+    <th class="question" data-sorting="question">易錯單字、片語、或例句</th>
+    <th class="span2 cnt" data-sorting="cnt" >測驗錯誤次數</th>
+    
+  </tr>
+  <% @records.each do |record| %>
+  <tr class="row">
+    <td class="span2">
+      <%= link_to record.course.category.title, record_wrong_lists_path(:search => {:category_id => record.course.category_id }) %>
+    </td>
+    <td class="span2">
+      <%= link_to record.course.title, record_wrong_lists_path(:search => {:category_id => record.course.category_id, :course_title => record.course.title }) %>
+    </td>
+    <td class="span2">
+      <%= link_to record.course.unit, record_wrong_lists_path(:search => {:category_id => record.course.category_id, :course_title => record.course.title, :unit => record.course.unit })  %>
+    </td>
+    <td class="">
+      <%= link_to record.course_item.try(:question), record_wrong_list_question_path(record.course_item_id) %>
+    </td>
+    <td class="span2">
+      <%= link_to record.cnt, record_wrong_list_question_path(record.course_item_id) %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<%= paginate @records %>

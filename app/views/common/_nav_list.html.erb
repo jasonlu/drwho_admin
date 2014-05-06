@@ -42,14 +42,14 @@
 <ul class="nav nav-tabs nav-stacked block-5">
   <li class="nav-header">會員學習進度</li>
   <% if can? :manage, User %>
-  <li class="<%= 'active' if controller.controller_name == 'users' %>">
+  <li class="<%= 'active' if @nav_section == 'set_start_day' %>">
     <%= link_to '選開課日', set_start_day_path %>
   </li>
-  <li class="<%= 'active' if controller.controller_name == 'messages' %>">
-    <%= link_to '學習紀錄', study_record_path %>
+  <li class="<%= 'active' if @nav_section == 'records' %>">
+    <%= link_to '學習紀錄', records_path %>
   </li>
-  <li class="<%= 'active' if controller.controller_name == 'messages' %>">
-    <%= link_to '易錯排行榜', study_wrong_list_path %>
+  <li class="<%= 'active' if @nav_section == 'wrong_list' %>">
+    <%= link_to '易錯排行榜', record_wrong_lists_path %>
   </li>
   <% end %>
 </ul>

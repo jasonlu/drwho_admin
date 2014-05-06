@@ -13,6 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.ui.all
+//= require jquery.ba-bbq.min
+//= require modernizr-2-6-2-min.js
 //= #require ckeditor-jquery
 //= #require ckeditor/init
 //= require table-sorting
+//= require main

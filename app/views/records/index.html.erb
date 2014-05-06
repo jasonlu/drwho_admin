@@ -1,0 +1,78 @@
+<ul class="breadcrumb">
+  <li class="<%= "active" if params[:search][:name].blank? %>"><%= link_to "全部學習記錄", records_path %></a>
+    <% unless params[:search][:name].blank? or params[:search][:date_start] or params[:search][:date_end]%>
+    <span class="divider">/</span>
+    <% end %>
+  </li>
+  
+  <% unless params[:search][:name].blank? or params[:search][:date_start] or params[:search][:date_end]%>
+  <li class="active" >
+    搜尋結果：
+    <%= link_to params[:search][:name], study_record_path(:search => {:name => params[:search][:name]}) %>
+    <% unless params[:search][:date_start].blank? %>
+    <% end %>
+  </li>
+  <% end %>
+
+  
+</ul>
+
+
+
+<%= form_tag records_path, :method => :get, :id => "filter-form", :class => "form-inline" do %>
+<%= label_tag "search[name]", "姓名" %>
+<%= text_field_tag "search[name]", params[:search][:name] %>
+<%= label_tag "search[date_start]", "開始日期" %>
+<%= date_field_tag "search[date_start]", params[:search][:date_start] %>
+<%= label_tag "search[date_end]", "結束日期" %>
+<%= date_field_tag "search[date_end]", params[:search][:date_end] %>
+<%= submit_tag("搜尋", :class => "btn") %>
+<% end %>
+
+<script>
+$(document).ready(function(){
+$("#filter-form select").change(function(){
+  $("#filter-form").submit();
+});
+
+});
+</script>
+
+<table class="table table-striped">
+  <tr class="sortable">
+    <th class="span2 serial-id" data-sorting="serial-id">會員編號</th>
+    <th class="span2 fullname" data-sorting="fullname">姓名</th>
+    <th class="span2 category" data-sorting="category">課程分類</th>
+    <th class="span2 title" data-sorting="title">課程名稱</th>
+    <th class="span2 unit" data-sorting="unit">單元數</th>
+    <th class="span2 serial" data-sorting="serial">課程編號</th>
+    <th class="span2 starts-at" data-sorting="starts-at">開始上課日期</th>
+    <th class="span2 ends-at" data-sorting="ends-at">結束上課日期</th>
+    <th class="span2 score" data-sorting="score">期末考成績</th>
+    <th class="span2 passed" data-sorting="passed">通關</th>
+    <th class="span2" >學習紀錄</th>
+    <th class="span2" >易錯排行榜</th>
+  </tr>
+
+<% @studies.each do |study| %>
+  <tr>
+    <td><%= study.user.serial_id %></td>
+    <td><%= study.user.fullname %></td>
+    <td><%= study.course.category.title %></td>
+    <td><%= study.course.title %></td>
+    <td><%= study.course.unit %></td>
+    <td><%= study.course.serial %></td>
+    <td><%= study.starts_at %></td>
+    <td><%= study.ends_at %></td>
+    <td><%= study.score %></td>
+    <td class="<%= study.passed? ? 'success' : 'fail' %>">
+        <%= study.passed? ? '通關' : '失敗' unless study.passed.nil? %>
+    </td>
+
+    <td><%= link_to '學習紀錄', record_path(study) %></td>
+    <td><%= link_to '易錯排行榜', record_wrong_list_path(study) %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= paginate @studies %>

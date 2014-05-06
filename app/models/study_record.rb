@@ -9,4 +9,6 @@ class StudyRecord < ActiveRecord::Base
     return self.wrong
   end
 
+  scope :wrong, -> {joins(:course_item).where("wrong = 1").select("COUNT(study_records.id) as cnt, study_records.*").group("course_item_id").order("cnt DESC")}
+
 end

@@ -8,8 +8,7 @@ class ApplicationController < ActionController::Base
   before_filter :prepare_sorting
 
   layout "application"
-
-  
+  @nav_section = ""  
 
   def prepare_sorting
     params[:sort] = 'id' if params[:sort].blank?

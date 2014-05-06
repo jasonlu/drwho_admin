@@ -1,8 +1,17 @@
+@import 'variables.css.scss';
+a.danger {
+  color: $danger;
+}
 
 tr.sortable>th {
   cursor: pointer;
 }
 
+#filter-form {
+  input[type=text], input[type=date] {
+    width: 120px;
+  }
+}
 nav {
   ul.block-1 li a, ul.block-1 li.active a{
     background: rgb(181,222,231);

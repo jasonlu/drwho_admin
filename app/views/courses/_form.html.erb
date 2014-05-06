@@ -16,16 +16,15 @@
 <%= form_for(@course) do |f| %>
 <legend><%= @course.title %></legend>
 <fieldset>
-  <%= f.label :title, '課程名稱' %>
-  <%= f.text_field :title %>
-  
   <%= f.label :serial, '編號' %>
   <%= f.text_field :serial %>
 
   <%= f.label :category, '課程分類' %>
   <%= f.select :category_id, Category.all.collect {|p| [ p.title, p.id ] }, :prompt => '- 新增 -' %>
-
   <%= text_field :category, :title, :placeholder => '- 新增 -', :class => 'hidden' %>
+
+  <%= f.label :title, '課程名稱' %>
+  <%= f.text_field :title %>
 
   <%= f.label :unit, '單元' %>
   <%= f.text_field :unit %>
