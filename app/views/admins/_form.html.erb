@@ -1,4 +1,4 @@
-<%= form_for @user do |f| %>
+<%= form_for @user, :action => admin_registration_path do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
@@ -15,7 +15,13 @@
     <%= f.text_field :email %>
     <%= label :password, '密碼' %>
     <%= f.password_field :password %>
+    <% if params[:action] == 'new' %>
+    <%= label :password_confirmation, '密碼確認' %>
+    <%= f.password_field :password_confirmation %>
+
+    <% else %>
     <span class="help-block alert">如果不需要變更密碼，請不要輸入任何內容</span>
+    <% end %>
 
     <%= f.fields_for :user_profile do |p| %>
       <%= label :firstname, '姓' %>
@@ -23,10 +29,7 @@
 
       <%= label :firstname, '名' %>
       <%= p.text_field :firstname %>
-<!--
-      <%= label :id_number, 'ID Number' %>
-      <%= p.text_field :id_number %>
--->
+
       <%= label :dob, '出生日期' %>
       <%= p.date_field :dob %>
 
@@ -46,12 +49,16 @@
       <%= p.text_field :address %>
 
     <% end %>
-    <label>賬號狀態</label>
-    <%= f.label :activated do %>
-      <%= f.check_box :activated %> 已啟用
-    <% end %>
 
-    
+    <%= f.label :role, '管理員身份' %>
+    <% for role in Admin::ROLES %>
+      
+      <%= label_tag "user_roles_#{role}", :class => 'checkbox' do %>
+        <%= check_box_tag "user[roles][#{role}]", role, @user.roles.include?(role), {:name => "user[roles][]"}%> <%= role.humanize %>
+      <% end %>
+
+    <% end %>
+    <%= hidden_field_tag "user[roles][]", "" %>
   </fieldset>
   <div class="form-actions">
     <%= f.submit "儲存", :class => 'btn btn-primary', :data => { :disable_with => "Saving..." } %>

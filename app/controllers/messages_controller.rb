@@ -83,7 +83,7 @@ class MessagesController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def message_params
       @receivers = params[:receivers]
-      params[:message][:user_id] = current_user.id
+      params[:message][:user_id] = current_admin.id
       params.require(:message).permit(:id, :subject, :content, :user_id)
     end
 

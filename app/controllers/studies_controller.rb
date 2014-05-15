@@ -21,7 +21,7 @@ class StudiesController < ApplicationController
       sort = 'starts_at'
     end
 
-    @studies = Study.where('user_id = ? AND starts_at <= ?', current_user.id, Time.zone.today).joins(:course).joins(:category).order(sort + ' ' + dir).page(params[:page])
+    @studies = Study.where('user_id = ? AND starts_at <= ?', current_admin.id, Time.zone.today).joins(:course).joins(:category).order(sort + ' ' + dir).page(params[:page])
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @studies }

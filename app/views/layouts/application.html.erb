@@ -31,9 +31,9 @@
         <div class="container">
           <a class="brand" href="/">Backstage</a>
             <div class="btn-group pull-right">
-              <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><%= current_user.email %> <span class="caret"></span></a>
+              <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><%= current_admin.email %> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="/users/sign_out"><i class="icon-off"></i> 登出</a></li>
+                <li><a href="<%= destroy_admin_session_path %>" data-method="delete"><i class="icon-off"></i> 登出</a></li>
               </ul>
             </div>
         </div>
