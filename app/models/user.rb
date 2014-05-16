@@ -26,12 +26,7 @@ class User < ActiveRecord::Base
 
   scope :male, -> {joins(:user_profile).where("user_profiles.gender = 1")}
   scope :female, -> {joins(:user_profile).where("user_profiles.gender = 0")}
-  scope :birthday_person, -> {
-    #@date = Time.now
-    #this_month = @date.strftime("%-m")
-    #joins(:user_profile).where("MONTH(user_profiles.dob) = ?", this_month )
-    all
-  }
+  scope :birthday_person, -> {joins(:user_profile).where("MONTH(user_profiles.dob) = ?", Time.now.strftime("%-m"))}
 
   def fullname
     unless self.nil? and self.profile.nil?
@@ -52,7 +47,12 @@ class User < ActiveRecord::Base
 
 private
   def generate_serial_id
-    serial_id = User.last.id + 1000065535
+    unless User.last.nil?
+      serial_id = User.last.id + 1000065535
+    else
+      serial_id = 1000065535
+    end
+
     self.serial_id = serial_id
   end
 end
