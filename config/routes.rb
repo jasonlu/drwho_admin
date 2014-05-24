@@ -1,9 +1,7 @@
 DrwhoAdmin::Application.routes.draw do
-
-  
-
+  devise_for :admins, :controllers => { :registrations => "admins", :sessions => "admin_sessions" }  
   #mount Ckeditor::Engine => '/ckeditor'
-  devise_for :users, :controllers => { :registrations => "admin_registrations", :sessions => "admin_sessions" }  
+  #devise_for :users, :controllers => { :registrations => "admin_registrations", :sessions => "admin_sessions" }  
   get "users/search", :to => 'users#search', :as => :search_user
   get "admins/search", :to => 'admins#search', :as => :search_admin
   resources :users

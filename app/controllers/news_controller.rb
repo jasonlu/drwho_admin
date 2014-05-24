@@ -50,7 +50,7 @@ class NewsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def news_params
-      params[:news][:user_id] = current_user.id
+      params[:news][:user_id] = current_admin.id
       params.require(:news).permit(:id, :content, :title, :user_id, :publish_at, :close_at)
     end
 end

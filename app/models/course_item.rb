@@ -8,6 +8,10 @@ class CourseItem < ActiveRecord::Base
   attr_accessible :answer, :course_id, :question, :audio, :delete_audio, :filename, :day
   belongs_to :course
 
+  def self.file_path
+    '/files/audio/'
+  end
+
   def file_path
     #'/files/audio/' + self.filename + '.m4a'
     '/files/audio/' + self.filename

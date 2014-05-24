@@ -32,12 +32,8 @@ class UsersController < ApplicationController
     end
     puts "sort: " + sort
     model = controller_name.classify
-    if(model == 'Admin') 
-      @user = User.where("type = 'Admin'")
-    else
-      @user = User.where("type = 'User' OR type is NULL")
-    end
-    @users = @user.joins(:user_profile).order(sort + ' ' + dir).page(params[:page])    
+    
+    @users = User.joins(:user_profile).order(sort + ' ' + dir).group("users.id").page(params[:page])
     render 'index', :locals => {:sort => sort, :dir => dir}
   end
 

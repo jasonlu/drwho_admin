@@ -7,9 +7,7 @@
 <table class="table table-striped">
   <tr class="sortable">
     <th class="span2 id" data-sorting="id">UID</th>
-    <th class="span2 serial" data-sorting="serial">會員編號</th>
     <th class="email" data-sorting="email">Email</th>
-    <th class="span2 activated" data-sorting="activated">已啟用</th>
     <th class="span2 lastname" data-sorting="lastname">姓</th>
     <th class="span2 firstname" data-sorting="firstname">名</th>
     <th class="span2 gender" data-sorting="gender">性別</th>
@@ -20,11 +18,9 @@
     <th class="span3"> </th>
   </tr>
   <% @users.each do |u| %>
-  <tr class="<%= u.activated ? 'activated' : 'disabled' %>" >
+  <tr >
     <td><%= u.id  %></td>
-    <td><%= u.serial_id  %></td>
     <td><%= u.email  %></td>
-    <td><%= u.confirmed_at.blank? ? "否" : "是"  %></td>
     <td><%= u.profile.lastname  %></td>
     <td><%= u.profile.firstname  %></td>
     <td><%= u.profile.gender == 1 ? "男性" : "女性"  %></td>
@@ -41,7 +37,7 @@
       <%= link_to edit_user_path(u), :title => '編輯', :class => 'btn btn-mini' do %>
       <i class="icon-edit"></i> 編輯
       <% end %>
-      <%= link_to user_path(u), :title => '刪除', :class => 'btn btn-mini btn-danger', :method => 'delete', confirm: '確定要刪除此會員嗎？' do %>
+      <%= link_to user_path(u), :title => '刪除', :class => 'btn btn-mini btn-danger', :method => 'delete' do %>
       <i class="icon-trash"></i> 刪除
       <% end %>      
     </td>
@@ -50,8 +46,7 @@
 </table>
 <%= paginate @users %>
 
-<!--
-<%= link_to new_user_path, :class => "btn btn-primary" do %>
-  <i class="icon-plus icon-white"> </i>新增會員
+
+<%= link_to new_admin_path, :class => "btn btn-primary" do %>
+  <i class="icon-plus icon-white"> </i>新增管理員
 <% end %>
--->

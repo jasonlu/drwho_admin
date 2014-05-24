@@ -53,7 +53,7 @@ class CoursesController < ApplicationController
     #params[:serial] = Time.now.to_i
 
     @course = Course.new(course_params)
-
+    serial = @course.serial
 
     if @course.save
       id = @course.id
@@ -90,6 +90,7 @@ class CoursesController < ApplicationController
           file.write(uploaded_io.read)
         end
         destination = Rails.root.join('public', 'files', 'audio')
+        FileUtils.mkdir_p(destination) unless File.exists?(destination)
         cmd = "unzip -jn " + file_path.to_s + " -d " + destination.to_s
         wasGood = system( cmd )
         File.delete(file_path.to_s)

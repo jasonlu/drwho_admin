@@ -1,7 +1,7 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(admin)
     # Define abilities for the passed in user here. For example:
     #user ||= User.new # guest user (not logged in)
     
@@ -9,7 +9,7 @@ class Ability
     #  can :read, :all #for guest without roles
     #end
 
-    user.roles.each { |role| send(role) }
+    admin.roles.each { |role| send(role) }
 
   end
 
@@ -30,9 +30,9 @@ class Ability
   end
 
   def admin_manager
-    can :manage_user, User, :type => 'User'
+    can :manage_user, User
     can :manage, Message
-    can :manage_admin, User, :type => 'Admin'
+    can :manage_admin, Admin
   end
 
   def order_manager
