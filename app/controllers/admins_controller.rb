@@ -33,7 +33,7 @@ class AdminsController < ApplicationController
     puts "sort: " + sort
     model = controller_name.classify
     
-    @users = Admin.joins(:profile).order(sort + ' ' + dir).group("admins.id").page(params[:page])    
+    @users = Admin.includes(:profile).order(sort + ' ' + dir).group("admins.id").page(params[:page])    
     render 'index', :locals => {:sort => sort, :dir => dir}
   end
 
@@ -41,34 +41,60 @@ class AdminsController < ApplicationController
     @user = Admin.new
   end
 
+  def show
+    @user = Admin.find(params[:id])
+  end
+
   def create
-    puts admin_params
     @user = Admin.new(admin_params)
     
-
     if @user.save
       flash[:notice] = t('devise.registrations.new_admin', :email => @user.email)
       redirect_to admins_path
     else
       flash[:error] = t('devise.failure.invalid')
       redirect_to :back
+    end
+  end
+
+  def edit
+    @user = Admin.find(params[:id])
+    if @user.profile.nil?
+      @profile = @user.profile.create
       
     end
-    
-    #flash[:notice] = t('my_error_message', :problem => 'Big Problem')
-    
+  end
 
+  def update
+    @user = Admin.find(params[:id])
+
+    @user.password = params[:admin][:password] unless params[:admin][:password].blank?
+      
+    if params[:admin][:activated].to_i == 1 and @user.confirmed_at.nil?
+      @user.confirmed_at = DateTime.now
+      @userconfirmation_token = nil
+    end
+    
+    if @user.update(admin_params)
+      flash[:notice] = t('devise.registrations.updated', :email => @user.email)
+      #render json: params
+      redirect_to :back
+    else
+      render action: 'edit'
+    end
+  end
+
+  def destroy
+    @user = Admin.find(params[:id])
+    @user.destroy
+    flash[:notice] = t('devise.registrations.destroyed', :email => @user.email)
+    redirect_to :back
   end
 
 
 private
   def admin_params
-    params.require(:admin).permit(:id, :email, :password, :password_confirmation)
-
+    params.require(:admin).permit(:id, :email, :roles => [], :user_profile_attributes => [:firstname, :lastname, :id_number, :dob, :gender, :education, :country, :register_address, :address])
   end
-
-
-
-
 
 end

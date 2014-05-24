@@ -53,14 +53,15 @@
     <%= f.label :role, '管理員身份' %>
     <% for role in Admin::ROLES %>
       
-      <%= label_tag "user_roles_#{role}", :class => 'checkbox' do %>
-        <%= check_box_tag "user[roles][#{role}]", role, @user.roles.include?(role), {:name => "user[roles][]"}%> <%= role.humanize %>
+      <%= label_tag "admin_roles_#{role}", :class => 'checkbox' do %>
+        <%= check_box_tag "admin[roles][#{role}]", role, @user.roles.include?(role), {:name => "admin[roles][]"}%> <%= role.humanize %>
       <% end %>
 
     <% end %>
-    <%= hidden_field_tag "user[roles][]", "" %>
+    <%= hidden_field_tag "admin[roles][]", "" %>
   </fieldset>
   <div class="form-actions">
+    <%= link_to "返回", admins_path, :class => 'btn' %>
     <%= f.submit "儲存", :class => 'btn btn-primary', :data => { :disable_with => "Saving..." } %>
   </div>
 <% end %>

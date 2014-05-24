@@ -47,10 +47,13 @@ class User < ActiveRecord::Base
 
 private
   def generate_serial_id
+
     unless User.last.nil?
       serial_id = User.last.id + 1000065535
+      #self.id = User.last.id + 1000 + 1
     else
       serial_id = 1000065535
+      #self.id = 1001
     end
 
     self.serial_id = serial_id

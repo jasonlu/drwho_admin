@@ -286,7 +286,7 @@ ActiveRecord::Schema.define(version: 20140515042835) do
   add_index "user_profiles", ["lastname", "firstname", "id_number", "education", "country", "address"], name: "index_user_profiles", type: :fulltext
   add_index "user_profiles", ["lastname"], name: "index_user_profiles_lastname", type: :fulltext
 
-  create_table "users", force: true do |t|
+  create_table "users", force: true, :options => "AUTO_INCREMENT = 1000" do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"

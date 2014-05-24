@@ -21,23 +21,23 @@
   <tr >
     <td><%= u.id  %></td>
     <td><%= u.email  %></td>
-    <td><%= u.profile.lastname  %></td>
-    <td><%= u.profile.firstname  %></td>
-    <td><%= u.profile.gender == 1 ? "男性" : "女性"  %></td>
-    <td><%= u.profile.dob.try(:year)  %></td>
-    <td><%= u.profile.dob.try(:month)  %></td>
-    <td><%= u.profile.education  %></td>
-    <td><%= u.profile.country  %></td>
+    <td><%= u.profile.try(:lastname)  %></td>
+    <td><%= u.profile.try(:firstname)  %></td>
+    <td><%= u.profile.try(:gender) == 1 ? "男性" : "女性"  %></td>
+    <td><%= u.profile.try(:dob).try(:year)  %></td>
+    <td><%= u.profile.try(:dob).try(:month)  %></td>
+    <td><%= u.profile.try(:education)  %></td>
+    <td><%= u.profile.try(:country)  %></td>
     <td>
       <!--
       <%= link_to user_path(u), :title => '檢視', :class => 'btn btn-mini' do %>
       <i class="icon-eye-open"></i>
       <% end %>
       -->
-      <%= link_to edit_user_path(u), :title => '編輯', :class => 'btn btn-mini' do %>
+      <%= link_to edit_admin_path(u), :title => '編輯', :class => 'btn btn-mini' do %>
       <i class="icon-edit"></i> 編輯
       <% end %>
-      <%= link_to user_path(u), :title => '刪除', :class => 'btn btn-mini btn-danger', :method => 'delete' do %>
+      <%= link_to admin_path(u), :title => '刪除', :class => 'btn btn-mini btn-danger', :method => 'delete', :confirm => "確定刪除管理員：#{u.email} 此動作不能復原" do %>
       <i class="icon-trash"></i> 刪除
       <% end %>      
     </td>

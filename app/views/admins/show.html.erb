@@ -1,7 +1,7 @@
 <table class="table">
   <tr>
-    <td>會員編號</td>
-    <td><%= @user.serial_id %></td>
+    <td>管理員編號</td>
+    <td><%= @user.id %></td>
   </tr>
 
   <tr>
@@ -16,43 +16,43 @@
 
   <tr>
     <td>性別</td>
-    <td><%= @user.profile.gender == 1 ? '男性' : '女性' %></td>
+    <td><%= @user.profile.try(:gender) == 1 ? '男性' : '女性' %></td>
   </tr>
 
   <tr>
     <td>生日</td>
-    <td><%= @user.profile.dob %></td>
+    <td><%= @user.profile.try(:dob) %></td>
   </tr>
 
   <tr>
     <td>教育程度</td>
-    <td><%= @user.profile.education %></td>
+    <td><%= @user.profile.try(:education) %></td>
   </tr>
 
   <tr>
     <td>國籍</td>
-    <td><%= @user.profile.country %></td>
+    <td><%= @user.profile.try(:country) %></td>
   </tr>
 
   <tr>
     <td>戶籍地城市</td>
-    <td><%= @user.profile.register_address %></td>
+    <td><%= @user.profile.try(:register_address) %></td>
   </tr>
 
   <tr>
     <td>居住地城市</td>
-    <td><%= @user.profile.address %></td>
+    <td><%= @user.profile.try(:address) %></td>
   </tr>
 
   <tr>
     <td>聯絡電話</td>
-    <td><%= @user.profile.phone %></td>
+    <td><%= @user.profile.try(:phone) %></td>
   </tr>
 
 
  <tr>
     <td>行動電話</td>
-    <td><%= @user.profile.cellphone %></td>
+    <td><%= @user.profile.try(:cellphone) %></td>
   </tr>
 
 </table>
