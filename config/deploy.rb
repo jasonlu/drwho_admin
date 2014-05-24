@@ -102,7 +102,7 @@ namespace :deploy do
       run_locally "rsync -vr --exclude='.DS_Store' config/database.yml #{user}@#{server.host}:#{shared_path}/config/"
       run_locally "rsync -vr --exclude='.DS_Store' config/initializers/secret_token.rb #{user}@#{server.host}:#{shared_path}/config/initializers/"
       run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/files/* #{user}@#{server.host}:#{static_shared_path}/files"
-      run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/uploads/* #{user}@#{server.host}:#{static_shared_path}/uploads"
+      #run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/uploads/* #{user}@#{server.host}:#{static_shared_path}/uploads"
       #run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/docs/* #{user}@#{server.host}:#{static_shared_path}/docs"
     end
   end

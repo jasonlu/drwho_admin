@@ -41,9 +41,4 @@ class Admin < ActiveRecord::Base
 
   end
 
-private:
-  def generate_id
-    
-  end
-
 end
