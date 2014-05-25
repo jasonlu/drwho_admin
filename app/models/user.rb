@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_many :self_learnings, :dependent => :destroy
   has_many :news, :dependent => :destroy
   has_many :inboxes, :dependent => :destroy
-  has_many :messages, through: :inboxes, :dependent => :destroy
+  
   has_many :studies, :dependent => :destroy
   has_many :study_records, :dependent => :destroy
   has_many :progresses, :dependent => :destroy

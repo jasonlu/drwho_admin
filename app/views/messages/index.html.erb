@@ -13,7 +13,7 @@
     <% @messages.each do |message| %>
       <tr>
         <td><%= message.subject %></td>
-        <td><%= message.sender.fullname %></td>
+        <td><%= message.sender.try(:fullname) %></td>
         <td><%= message.created_at.localtime.strftime("%Y/%m/%d %H:%m:%S") %></td>
         <td>
           <%= link_to edit_message_path(message), :title => '編輯', :class => 'btn btn-mini' do %>

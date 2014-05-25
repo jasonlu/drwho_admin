@@ -5,16 +5,16 @@ class Admin < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :messages, :foreign_key => 'user_id'
-  has_one :profile, :foreign_key => 'user_id', :class_name => 'UserProfile'
-  has_one :user_profile, :foreign_key => 'user_id'
+  has_many :messages, :foreign_key => 'user_id', :dependent => :destroy
+  has_one :profile, :foreign_key => 'user_id', :class_name => 'UserProfile', :dependent => :destroy
+  has_one :user_profile, :foreign_key => 'user_id', :dependent => :destroy
   accepts_nested_attributes_for :profile, :user_profile
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :roles, :remember_me, :user_profile_attributes, :confirmed_at, :confirmation_token
 
   
-  before_create :build_profile, :generate_id
+  before_create :build_profile
 
   ROLES = %w[admin marketing_manager course_manager order_manager user_manager admin_manager]
 
