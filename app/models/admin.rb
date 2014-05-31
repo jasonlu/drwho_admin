@@ -6,6 +6,7 @@ class Admin < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :messages, :foreign_key => 'user_id', :dependent => :destroy
+  
   has_one :profile, :foreign_key => 'user_id', :class_name => 'UserProfile', :dependent => :destroy
   has_one :user_profile, :foreign_key => 'user_id', :dependent => :destroy
   accepts_nested_attributes_for :profile, :user_profile

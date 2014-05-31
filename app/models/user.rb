@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_many :self_learnings, :dependent => :destroy
   has_many :news, :dependent => :destroy
   has_many :inboxes, :dependent => :destroy
-  
+  has_many :messages, through: :inboxes, :dependent => :destroy
   has_many :studies, :dependent => :destroy
   has_many :study_records, :dependent => :destroy
   has_many :progresses, :dependent => :destroy
@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :recoverable, :trackable, :validatable, :confirmable, :rememberable
+  devise :database_authenticatable, :async, :registerable, :recoverable, :trackable, :validatable, :confirmable, :rememberable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :roles, :remember_me, :user_profile_attributes, :confirmed_at, :confirmation_token

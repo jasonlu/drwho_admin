@@ -60,8 +60,8 @@ class AdminsController < ApplicationController
   def edit
     @user = Admin.find(params[:id])
     if @user.profile.nil?
-      @profile = @user.profile.create
-      
+      @profile = @user.build_profile
+      @profile.save
     end
   end
 
