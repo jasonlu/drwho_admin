@@ -51,6 +51,8 @@ GEM
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
       warden (~> 1.2.1)
+    devise-async (0.8.0)
+      devise (>= 2.2, < 3.2)
     devise-i18n (0.10.3)
     erubis (2.7.0)
     eventmachine (1.0.3)
@@ -165,6 +167,7 @@ DEPENDENCIES
   coffee-script
   country_select (= 1.2.0)
   devise (= 3.0.0.rc)
+  devise-async
   devise-i18n
   jquery-rails
   jquery-ui-rails

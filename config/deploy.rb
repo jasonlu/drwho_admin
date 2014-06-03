@@ -46,8 +46,10 @@ namespace :deploy do
         execute :ln, "-s #{fetch :static_shares}/public #{fetch :release_path}/public"
 
         execute :rm, "-Rf #{fetch :release_path}/log"
+        execute :ln, "-s #{fetch :static_shares}/log #{fetch :release_path}/log"
+
         execute :rm, "-Rf #{fetch :release_path}/app/models"
-        execute :ln, "-s #{fetch :static_shares}/models #{fetch :release_path}/app/models"
+        execute :ln, "-s #{fetch :models_path} #{fetch :release_path}/app/models"
         
       end      
     end
