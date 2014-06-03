@@ -46,7 +46,7 @@ namespace :deploy do
         execute :ln, "-s #{fetch :static_shares}/public #{fetch :release_path}/public"
 
         execute :rm, "-Rf #{fetch :release_path}/log"
-        execute :ln, "-s #{fetch :static_shares}/log #{fetch :release_path}/log"
+        execute :ln, "-s #{fetch :shared_path}/log #{fetch :release_path}/log"
 
         execute :rm, "-Rf #{fetch :release_path}/app/models"
         execute :ln, "-s #{fetch :models_path} #{fetch :release_path}/app/models"
@@ -91,7 +91,7 @@ namespace :deploy do
   end
 
   after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
+    on roles(:app), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
       # within release_path do
       #   execute :rake, 'cache:clear'
