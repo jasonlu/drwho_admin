@@ -1,156 +1,100 @@
-require 'capistrano/ext/multistage'
+# config valid only for Capistrano 3.1
+lock '3.2.1'
 
-set :user, "deploy"  # The server's user for deploys
-set :application, "DrwhoAdmin"
-set :repository,  "git@github.com:jasonlu/drwho_admin.git"
-set :keep_release, 5
-set :use_sudo, false
+set :application, 'drwho_admin'
+set :repo_url, "git@github.com:jasonlu/drwho_admin.git"
 
-set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
-set :scm_passphrases, ""
-# Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
-set :stages, ["staging", "production"]
-set :default_stage, "staging"
+# Default branch is :master
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
+# Default deploy_to directory is /var/www/my_app
+# set :deploy_to, '/var/www/my_app'
 
-namespace :bundle do
+# Default value for :scm is :git
+# set :scm, :git
 
-  desc "run bundle install and ensure all gem requirements are met"
-  task :install do
-    run "cd #{current_path} && bundle install  --without=test"
-  end
+# Default value for :format is :pretty
+# set :format, :pretty
 
-end
+# Default value for :log_level is :debug
+# set :log_level, :debug
 
-# Generate an additional task to fire up the thin clusters
+# Default value for :pty is false
+# set :pty, true
 
-def remote_file_exists?(full_path)
-  'true' ==  capture("if [ -e #{full_path} ]; then echo 'true'; fi").strip
-end
+# Default value for :linked_files is []
+# set :linked_files, %w{config/database.yml}
 
-namespace :db do
-  config = YAML.load_file(File.join('config', 'database.yml'))
-  
-  desc "Migrate DB"
-  task :migrate do
-    run "cd #{current_path} && bundle exec rake db:migrate RAILS_ENV=#{rails_env}"
-  end
-  
-  task :dump do
-    
-    db_config = config[rails_env]
-    
-    backup_path = File.join('db', Time.now.strftime("backup_#{db_config['database']}_%Y-%m-%e.sql"))
-    on_rollback { delete backup_path, :recursive => false }
-    backup_file = File.new(backup_path, 'w+')
+# Default value for linked_dirs is []
+# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
-    run "mysqldump --default-character-set=utf8 " +
-    "--user=#{db_config['username']} " +
-    "--password " +
-    "-B #{db_config['database']}" do |channel,stream,data|
-      if stream == :out
-        backup_file.write(data)
-        #puts data
-      else
-        if data =~ /^Enter password:/
-          puts data
-          channel.send_data(db_config['password'])
-          channel.send_data("\n")
-        else
-          raise Capistrano::Error, "unexpected output from mysqldump: " + data
-        end
-      end
-    end
-    #run "mysql -u onlynet -p onlynet_dev | mysqldump -u onlynet -p onlynet_prod"
-  end
-  
-end
+# Default value for default_env is {}
+# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+
+# Default value for keep_releases is 5
+# set :keep_releases, 5
 
 namespace :deploy do
-  task :start do
-    #run "cd #{current_path} && bundle exec thin start -C #{release_path}/config/thin.yml"
-    run "cd #{current_path} && bundle exec thin start -C #{thin_config_file}"
-  end
-  task :stop do
-    #run "cd #{current_path} && bundle exec thin stop -C ./config/thin.yml"
-    run "cd #{current_path} && bundle exec thin stop -C #{thin_config_file}"
-  end
-  task :restart, :roles => [:web, :app], :except => { :no_release => true } do
-    if remote_file_exists?(thin_pid_file)
-      deploy.stop
-      deploy.start
-      #run "cd #{current_path} && bundle exec thin restart -C #{thin_config_file}"
-    else
-      deploy.start
-    end
-    #run "cd #{current_path} && bundle exec thin restart -C ./config/thin.yml"
-    #run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-  end
 
-  desc "My setup here"
-  task :setup do
-    run "mkdir -p #{deploy_to} #{deploy_to}/releases #{deploy_to}/shared #{deploy_to}/shared/system #{deploy_to}/shared/log #{deploy_to}/shared/pids #{deploy_to}/shared/files #{deploy_to}/shared/temp #{deploy_to}/shared/uploads #{deploy_to}/shared/ckeditor_assets #{deploy_to}/shared/config"
-    run "chmod g+w #{deploy_to} #{deploy_to}/releases #{deploy_to}/shared #{deploy_to}/shared/system #{deploy_to}/shared/log #{deploy_to}/shared/pids #{deploy_to}/shared/files #{deploy_to}/shared/temp #{deploy_to}/shared/uploads #{deploy_to}/shared/ckeditor_assets #{deploy_to}/shared/config"
-    deploy.copy_files
-  end
+  desc 'Create symlink'
+  task :create_symlink do
+    on roles(:app) do |host|
+      execute :ln, "-s #{fetch :static_shares}/config/database.yml #{fetch :release_path}/config/database.yml"
+      execute :ln, "-s #{fetch :static_shares}/config/initializers/secret_token.admin.rb #{fetch :release_path}/config/initializers/secret_token.rb"
+      within "#{fetch :release_path}" do
+        execute :rm, "-Rf #{fetch :release_path}/public"
+        execute :ln, "-s #{fetch :static_shares}/public #{fetch :release_path}/public"
 
-  task :copy_files do
-    find_servers_for_task(current_task).each do |server|
-      #run_locally "rsync -vr --exclude='.DS_Store' public/files #{user}@#{server.host}:#{shared_path}/"
-      #run_locally "rsync -vr --exclude='.DS_Store' public/uploads #{user}@#{server.host}:#{shared_path}/"
-      #run_locally "rsync -vr --exclude='.DS_Store' public/ckeditor_assets #{user}@#{server.host}:#{shared_path}/"
-      run_locally "rsync -vr --exclude='.DS_Store' config/database.yml #{user}@#{server.host}:#{shared_path}/config/"
-      run_locally "rsync -vr --exclude='.DS_Store' config/initializers/secret_token.rb #{user}@#{server.host}:#{shared_path}/config/initializers/"
-      run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/files/* #{user}@#{server.host}:#{static_shared_path}/files"
-      #run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/uploads/* #{user}@#{server.host}:#{static_shared_path}/uploads"
-      #run_locally "rsync -vr --exclude='.DS_Store' --ignore-existing public/docs/* #{user}@#{server.host}:#{static_shared_path}/docs"
+        execute :rm, "-Rf #{fetch :release_path}/log"
+        execute :rm, "-Rf #{fetch :release_path}/app/models"
+        execute :ln, "-s #{fetch :static_shares}/models #{fetch :release_path}/app/models"
+        
+      end      
     end
   end
-  
 
-  desc "symlink shared files between releases"
-  task :symlink_shared, :roles => [:app, :web] do
-    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-    run "ln -nfs #{shared_path}/config/initializers/secret_token.rb #{release_path}/config/initializers/secret_token.rb"
+  desc "bundle_install"
+  task :bundle_install do
+    on roles(:app) do |host|
+      within "#{fetch :deploy_to}/current" do
+        execute :bundle, "install"
+      end
+    end
+  end
+
+  desc 'Restart application'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      # Your restart mechanism here, for example:
+      # execute :touch, release_path.join('tmp/restart.txt')
+    end
+  end
+
+  desc 'Compile Assets'
+  task :compile_assets do
+    on roles(:app) do |host|
+      within "#{fetch :release_path}" do
+        execute :bundle, "exec rake assets:precompile"
+      end
+    end
+  end
+
+  after :published, :create_symlink do
+    Rake::Task["deploy:bundle_install"].invoke
+    Rake::Task["deploy:compile_assets"].invoke
+    Rake::Task["deploy:restart"].invoke
     
-    run "ln -nfs #{static_shared_path}/uploads #{release_path}/public/uploads"
-    run "ln -nfs #{static_shared_path}/files #{release_path}/public/files"
-    run "ln -nfs #{static_shared_path}/docs #{release_path}/public/docs"
-    
-    run "ln -nfs #{shared_path}/assets #{release_path}/assets"
-    run "ln -nfs #{shared_path}/temp #{release_path}/public/temp"
-    run "ln -nfs #{shared_path}/log #{release_path}/log"
-    run "ln -nfs #{shared_path}/pid #{release_path}/tmp/pid"
-    run "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
-
+    #deploy.bundle_install
+    #deploy.restart
   end
 
-
-
-  task :quick do
-    deploy.update
-    deploy.restart
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      # Here we can do anything such as:
+      # within release_path do
+      #   execute :rake, 'cache:clear'
+      # end
+    end
   end
 
-  task :warp10 do
-    run_locally "git add . && git commit -am 'quick_deploy' && git push"
-    deploy.quick
-  end
 end
-
-namespace :assets do
-  task :precompile do
-    run "cd #{current_path} && bundle exec rake assets:precompile"
-  end
-  task :clean do
-    run "cd #{shared_path} && rm -Rf ./assets/*"
-  end
-end
-
-
-after "deploy:create_symlink", "deploy:copy_files", "deploy:symlink_shared","deploy:cleanup", "bundle:install", "db:migrate"
-#before "deploy:symlink_shared", "deploy:copy_files"
-#after "deploy:symlink_shared", "deploy:assets:precompile"
-#before "deploy:assets:precompile", "bundle:install"
-#after "bundle:install", "deploy:migrate"
-#before "deploy:restart", "bundle:install"
