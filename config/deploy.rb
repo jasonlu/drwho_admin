@@ -44,17 +44,11 @@ set :repo_url, "git@github.com:jasonlu/drwho_admin.git"
 # set :keep_releases, 5
 set :git_strategy, SubmoduleStrategy
 
+def remote_file_exists?(full_path)
+  'true' ==  capture("if [ -e #{full_path} ]; then echo 'true'; fi").strip
+end
 
 namespace :deploy do
-
-  desc 'update_submodule'
-  task :update_submodule do
-    on roles(:app) do |host|
-      within "#{fetch :release_path}" do
-        #execute :git, "submodule update --init --recursive"
-      end
-    end
-  end
 
   desc 'Create symlink'
   task :create_symlink do
@@ -89,47 +83,68 @@ namespace :deploy do
   desc "bundle_install"
   task :bundle_install do
     on roles(:app) do |host|
-      within "#{fetch :deploy_to}/current" do
+      if release_path != ""
+        path = release_path
+      else
+        path = "#{fetch :deploy_to}/current"
+      end
+      within path do
         execute :bundle, "install"
       end
     end
   end
 
-  desc 'Restart application'
-  task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
-      # Your restart mechanism here, for example:
-      # execute :touch, release_path.join('tmp/restart.txt')
-    end
-  end
 
   desc 'Compile Assets'
   task :compile_assets do
     on roles(:app) do |host|
-      within "#{fetch :release_path}" do
+      if release_path != ""
+        path = release_path
+      else
+        path = "#{fetch :deploy_to}/current"
+      end
+
+      within path do
         execute :bundle, "exec rake assets:precompile"
       end
     end
   end
 
-  after :published, :update_submodule do
+  desc 'Restart Thin'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      if release_path != ""
+        path = release_path
+      else
+        path = "#{fetch :deploy_to}/current"
+      end
+      set :thin_pid_file, "#{path}/#{fetch :thin_pid_file}"
 
-    Rake::Task["deploy:create_symlink"].invoke
-    Rake::Task["deploy:bundle_install"].invoke
-    Rake::Task["deploy:compile_assets"].invoke
-    Rake::Task["deploy:restart"].invoke
-    
-    #deploy.bundle_install
-    #deploy.restart
-  end
-
-  after :restart, :clear_cache do
-    on roles(:app), in: :groups, limit: 3, wait: 10 do
+      within path do
+        if remote_file_exists?(fetch :thin_pid_file)
+          execute :bundle, "exec thin restart -O -C #{fetch :thin_config_file}"
+        else
+          execute :bundle, "exec thin start -O -C #{fetch :thin_config_file}"
+        end
+      end
       # Here we can do anything such as:
       # within release_path do
       #   execute :rake, 'cache:clear'
       # end
     end
+  end
+
+  after :published, :create_symlink do
+    #Rake::Task["deploy:create_symlink"].invoke
+    Rake::Task["deploy:bundle_install"].invoke
+    Rake::Task["deploy:compile_assets"].invoke
+    Rake::Task["deploy:restart"].invoke
+    #deploy.bundle_install
+    #deploy.restart
+  end
+
+  after :restart, :clear_cache do
+    
   end
 
 end
