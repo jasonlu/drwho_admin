@@ -1,6 +1,15 @@
 # config valid only for Capistrano 3.1
 lock '3.2.1'
 
+# deploy:starting    - start a deployment, make sure everything is ready
+# deploy:started     - started hook (for custom tasks)
+# deploy:updating    - update server(s) with a new release
+# deploy:updated     - updated hook
+# deploy:publishing  - publish the new release
+# deploy:published   - published hook
+# deploy:finishing   - finish the deployment, clean up everything
+# deploy:finished    - finished hook
+
 set :application, 'drwho_admin'
 set :repo_url, "git@github.com:jasonlu/drwho_admin.git"
 
@@ -36,6 +45,15 @@ set :repo_url, "git@github.com:jasonlu/drwho_admin.git"
 
 namespace :deploy do
 
+  desc 'update_submodule'
+  task :update_submodule do
+    on roles(:app) do |host|
+      execute :git, "submodule init"
+      
+      
+    end
+  end
+
   desc 'Create symlink'
   task :create_symlink do
     on roles(:app) do |host|
@@ -47,6 +65,9 @@ namespace :deploy do
 
         execute :rm, "-Rf #{fetch :release_path}/log"
         execute :ln, "-s #{fetch :shared_path}/log #{fetch :release_path}/log"
+
+        execute :rm, "-Rf #{fetch :release_path}/tmp"
+        execute :ln, "-s #{fetch :shared_path}/tmp #{fetch :release_path}/tmp"
 
         execute :rm, "-Rf #{fetch :release_path}/app/models"
         execute :ln, "-s #{fetch :models_path} #{fetch :release_path}/app/models"
@@ -81,7 +102,9 @@ namespace :deploy do
     end
   end
 
-  after :published, :create_symlink do
+  after :published, :update_submodule do
+
+    Rake::Task["deploy:create_symlink"].invoke
     Rake::Task["deploy:bundle_install"].invoke
     Rake::Task["deploy:compile_assets"].invoke
     Rake::Task["deploy:restart"].invoke
