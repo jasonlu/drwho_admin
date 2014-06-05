@@ -42,15 +42,17 @@ set :repo_url, "git@github.com:jasonlu/drwho_admin.git"
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
+set :git_strategy, SubmoduleStrategy
+
 
 namespace :deploy do
 
   desc 'update_submodule'
   task :update_submodule do
     on roles(:app) do |host|
-      execute :git, "submodule init"
-      
-      
+      within "#{fetch :release_path}" do
+        #execute :git, "submodule update --init --recursive"
+      end
     end
   end
 
@@ -59,6 +61,14 @@ namespace :deploy do
     on roles(:app) do |host|
       execute :ln, "-s #{fetch :static_shares}/config/database.yml #{fetch :release_path}/config/database.yml"
       execute :ln, "-s #{fetch :static_shares}/config/initializers/secret_token.admin.rb #{fetch :release_path}/config/initializers/secret_token.rb"
+      set :shared_path, "#{fetch :release_path}/../../shared"
+      within "#{fetch :shared_path}" do
+        execute :mkdir, "-p ./log"
+        execute :mkdir, "-p ./tmp"
+        execute :mkdir, "-p ./pid"
+        execute :mkdir, "-p ./assets"
+      end
+
       within "#{fetch :release_path}" do
         execute :rm, "-Rf #{fetch :release_path}/public"
         execute :ln, "-s #{fetch :static_shares}/public #{fetch :release_path}/public"
@@ -69,8 +79,8 @@ namespace :deploy do
         execute :rm, "-Rf #{fetch :release_path}/tmp"
         execute :ln, "-s #{fetch :shared_path}/tmp #{fetch :release_path}/tmp"
 
-        execute :rm, "-Rf #{fetch :release_path}/app/models"
-        execute :ln, "-s #{fetch :models_path} #{fetch :release_path}/app/models"
+        #execute :rm, "-Rf #{fetch :release_path}/app/models"
+        #execute :ln, "-s #{fetch :models_path} #{fetch :release_path}/app/models"
         
       end      
     end
