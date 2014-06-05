@@ -53,7 +53,6 @@ namespace :deploy do
   desc 'Setup'
   task :setup do
     on roles(:app) do |host|
-      
       within "#{fetch :deploy_to}" do
         execute :mkdir, "-p ./shared"
         execute :mkdir, "-p ./releases"
@@ -74,9 +73,10 @@ namespace :deploy do
         execute :mkdir, "-p ./public"
         execute :mkdir, "-p ./private"
       end
+      user = host.user
       run_locally do
-        execute :rsync, "-vr --exclude='.DS_Store' config/database.yml deploy@#{host}:#{fetch :static_shares}/config/"
-        execute :rsync, "-vr --exclude='.DS_Store' config/initializers/secret_token.rb deploy@#{host}:#{fetch :static_shares}/config/initializers/secret_token.admin.rb"
+        execute :rsync, "-vr --exclude='.DS_Store' config/database.yml #{user}@#{host}:#{fetch :static_shares}/config/"
+        execute :rsync, "-vr --exclude='.DS_Store' config/initializers/secret_token.rb #{user}@#{host}:#{fetch :static_shares}/config/initializers/secret_token.admin.rb"
       end
 
     end
