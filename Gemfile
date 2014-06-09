@@ -21,7 +21,7 @@ gem "protected_attributes"
 
 gem "devise", "3.0.0.rc"
 gem "devise-i18n"
-gem "devise-async"
+#gem "devise-async"
 gem "cancan"
 gem "kaminari"
 gem "kaminari-bootstrap", "~> 0.1.3"

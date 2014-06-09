@@ -27,6 +27,10 @@ DrwhoAdmin::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = { :host => 'dev.onlynet.biz' }
+  config.action_mailer.delivery_method = :sendmail
+
   config.upload_path = "public/uploads"
 
 
