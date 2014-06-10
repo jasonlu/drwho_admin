@@ -18,9 +18,10 @@ module ApplicationHelper
           f.write("/* empty css file */")
         end
       end
-    end
-  end
-end
+
+    end # -- controllers.each
+  end # -- def
+
 
 
 
