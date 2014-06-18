@@ -1,6 +1,6 @@
 
 <ul class="breadcrumb">
-  <li><%= link_to "全部易錯派行榜", record_wrong_lists_path %></a> <span class="divider">/</span></li>
+  <li><%= link_to "易錯派行榜", record_wrong_lists_path %></a> <span class="divider">/</span></li>
   <li><%= link_to @course.category.title, record_wrong_lists_path(:search => {:category_id => @course.category_id}) %></a> <span class="divider">/</span></li>
   <li><%= link_to @course.title, record_wrong_lists_path(:search => {:category_id => @course.category_id, :course_title => @course.title}) %> <span class="divider">/</span></li>
   <li><%= link_to @course.unit, record_wrong_lists_path(:search => {:category_id => @course.category_id, :course_title => @course.title, :unit => @course.unit }) %> <span class="divider">/</span></li>

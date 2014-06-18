@@ -1,7 +1,7 @@
 <!-- <h3>所有學生 全部課程易錯排行榜</h3> -->
 
 <ul class="breadcrumb">
-  <li class="<%= "active" if params[:search][:category_id].blank? %>"><%= link_to "全部易錯派行榜", record_wrong_lists_path %></a>
+  <li class="<%= "active" if params[:search][:category_id].blank? %>"><%= link_to "易錯派行榜", record_wrong_lists_path %></a>
     <% unless params[:search][:category_id].blank? %>
     <span class="divider">/</span>
     <% end %>
