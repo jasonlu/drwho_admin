@@ -80,6 +80,15 @@ class RecordsController < ApplicationController
   def show
     
     @study = Study.find(params[:study_id])
+    
+    @gpa = 0.0
+    #@story_records.each |rec| do
+    #end
+    if @study.score.nil?
+      @gpa = @study.progresses.where('stage = 3').select("AVG(score) AS gpa").first.gpa
+    else 
+      @gpa = @study.score
+    end
     @records = @study.study_records 
 
   end
