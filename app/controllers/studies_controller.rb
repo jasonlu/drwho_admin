@@ -40,6 +40,9 @@ class StudiesController < ApplicationController
   end
 
   def destroy
+    @study = Study.find(params[:id])  
+    @study.user_id = 0
+    @study.save
     flash[:notice] = "刪除記錄成功"
     redirect_to :back;
   end
