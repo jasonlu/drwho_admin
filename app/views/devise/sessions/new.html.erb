@@ -1,9 +1,13 @@
 <div class="row">
   <div class="span8">
     
-    
   </div>
   <div class="span4">
+  	<% unless flash[:alert].blank? %>
+      <div class="alert alert-error">
+      	<%= flash[:alert] %>
+      </div>
+    <% end %>
     <%= render "devise/shared/login_form" %>
     <%= render "devise/shared/links" %>
   </div>

@@ -1,7 +1,9 @@
 source "https://rubygems.org"
-gem "rails", "~> 4.0.0"
+#gem "rails", "~> 4.0.0"
+gem 'rails', '4.1.1'
 gem "rails-i18n", "~> 4.0.0"
-gem "mysql2", "~> 0.3.0"
+
+gem "mysql2"
 gem "thin"
 gem "protected_attributes"
 gem "dalli"
@@ -15,12 +17,12 @@ gem "dalli"
   #gem "bootstrap-glyphicons"
   #gem "anjlab-widgets"
   gem "jquery-rails"
-  gem "jquery-ui-rails"
+  gem "jquery-ui-rails", "~> 5.0.3"
   gem "coffee-script"
   gem "uglifier", ">= 1.0.3"
 #end
 
-gem "devise", "3.0.0.rc"
+gem "devise", "3.2.4"
 gem "devise-i18n"
 #gem "devise-async"
 gem "cancan"

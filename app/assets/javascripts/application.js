@@ -12,7 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery.ui.all
+//= require jquery-ui
 //= require jquery.ba-bbq.min
 //= require modernizr-2-6-2-min.js
 //= #require ckeditor-jquery
