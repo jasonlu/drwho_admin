@@ -12,19 +12,29 @@
 }
 
 </style>
-<h1>Listing upload_files</h1>
-
+<h1>伺服器中的圖片</h1>
+<div class="row">
 <% @upload_files.each do |upload_file| %>
-      <div class="span3 upload-image-container">
-        <a href="<%= upload_file[:path] %>" class="file-item">
-          <img src="<%= upload_file[:path] %>" alt="">
-        </a>
-        
-        <%= link_to 'Destroy', upload_file, method: :delete, data: { confirm: 'Are you sure?' } %>
-      </div>
-    <% end %>
+  <div class="span3">
+    <p>
+      <a href="<%= upload_file[:path] %>" class="file-item">
+        <img src="<%= upload_file[:path] %>" alt="">
+      </a>
+    </p>
+    <p>
+      <%= link_to '刪除', upload_file, class: "btn", method: :delete, data: { confirm: 'Are you sure?' } %>
+    </p>
+  </div>
+<% end %>
+</div>
 
-<%= link_to 'New Upload file', new_upload_file_path %>
+<div class="row">
+<%= link_to 'New', new_upload_file_path, class: "btn span6 offset3" %>
+</div>
+
+
+
+
 
 
 <script>

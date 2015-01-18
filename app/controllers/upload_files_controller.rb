@@ -35,18 +35,31 @@ class UploadFilesController < ApplicationController
   # POST /upload_files
   def create
     upload_path = Rails.application.config.upload_path
-    file = params[:upload]
+    file = nil
+    if params[:upload_file][:upload].blank?
+      file = params[:upload]
+    else
+      file = params[:upload_file][:upload]
+    end
+
     unless file.nil?
       name =  file.original_filename
       #directory = "public/uploads"
       # create the file path
       path = File.join(upload_path, name)
       # write the file
-      File.open(path, "wb") { |f| f.write(params[:upload].read) }
+      File.open(path, "wb") { |f| f.write(file.read) }
       image_url = '/uploads/' + name
-      @CKEditorFuncNum = params[:CKEditorFuncNum]
-      @image_url = image_url
+
       @message = "Upload completed."
+      @image_url = image_url
+      if params[:CKEditorFuncNum].blank?
+        redirect_to upload_files_path
+      else
+        @CKEditorFuncNum = params[:CKEditorFuncNum]
+      end
+      
+      
       
     end
 

@@ -67,15 +67,16 @@ class AdminsController < ApplicationController
 
   def update
     @user = Admin.find(params[:id])
-
-    @user.password = params[:admin][:password] unless params[:admin][:password].blank?
-      
+    
+    
+    new_params = admin_params
     if params[:admin][:activated].to_i == 1 and @user.confirmed_at.nil?
       @user.confirmed_at = DateTime.now
       @userconfirmation_token = nil
     end
-    
-    if @user.update(admin_params)
+    new_params[:password] = nil
+    new_params[:password] = params[:admin][:password] unless params[:admin][:password].blank?
+    if @user.update(new_params)
       flash[:notice] = t('devise.registrations.updated', :email => @user.email)
       #render json: params
       redirect_to :back

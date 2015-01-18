@@ -29,7 +29,7 @@
       <td><%= course.unit %></td>
       <td><%= course.serial %></td>
       <td><%= course.duration_days %> <%= t('天') %></td>
-      <td><%= number_to_currency(course.price, :precision => 0, :locale => :zh_tw) %></td>
+      <td><%= number_to_currency(course.price, :precision => 0, :locale => :"zh-TW") %></td>
     </tr>
     <%
     total_price += course.price
@@ -38,7 +38,7 @@
   <tr>
     <td colspan="4"><%= t('購物單金額') %></td>
     <td><%= t('小計') %></td>
-    <td><%= number_to_currency(total_price, :precision => 0, :locale => :zh_tw) %></td>
+    <td><%= number_to_currency(total_price, :precision => 0, :locale => :"zh-TW") %></td>
   </tr>
 </table>
 <%= render 'form' %>

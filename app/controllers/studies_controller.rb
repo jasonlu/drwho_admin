@@ -71,8 +71,8 @@ class StudiesController < ApplicationController
     else
       sort = 'starts_at'
     end
-
-    search = params[:search]
+    @search = Hash.new
+    @search = params[:search] if params[:search].is_a? Hash
     
     @studies = Study.
       joins(:course => :category).
@@ -81,23 +81,24 @@ class StudiesController < ApplicationController
       order(sort + ' ' + dir).
       page(params[:page])
 
-    if search[:no_date].to_i == 1
+
+    if @search[:no_date].to_i == 1
       @studies = @studies.where("starts_at IS NULL")
     else
-      @studies = @studies.where("starts_at >= ?", search[:date_start].to_date) unless search[:date_start].blank?
-      @studies = @studies.where("starts_at <= ?", search[:date_end].to_date) unless search[:date_end].blank?
+      @studies = @studies.where("starts_at >= ?", @search[:date_start].to_date) unless @search[:date_start].blank?
+      @studies = @studies.where("starts_at <= ?", @search[:date_end].to_date) unless @search[:date_end].blank?
     end
-    @studies = @studies.where("studies.user_id = ?", search[:serial_id].to_i - 1000065535) if search[:serial_id].to_i > 0
+    @studies = @studies.where("studies.user_id = ?", @search[:serial_id].to_i - 1000065535) if @search[:serial_id].to_i > 0
     @studies = @studies.where("
       user_profiles.lastname LIKE ? OR 
       user_profiles.firstname LIKE ? OR 
       CONCAT(user_profiles.lastname, ' ', user_profiles.firstname) LIKE ? OR
       CONCAT(user_profiles.lastname, user_profiles.firstname) LIKE ?
       ", 
-      "%" + search[:name] + "%", 
-      "%" + search[:name] + "%", 
-      "%" + search[:name] + "%",
-      "%" + search[:name] + "%") unless search[:name].blank?
+      "%" + @search[:name] + "%", 
+      "%" + @search[:name] + "%", 
+      "%" + @search[:name] + "%",
+      "%" + @search[:name] + "%") unless @search[:name].blank?
   end
 
   # PATCH

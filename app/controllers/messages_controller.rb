@@ -13,7 +13,8 @@ class MessagesController < ApplicationController
     else
       sort = 'id'
     end
-    @messages = Message.all.joins(:sender_profile).order(sort + ' ' + dir).page(params[:page])
+
+    @messages = Message.joins("LEFT JOIN user_profiles on user_profiles.user_id = messages.user_id").order(sort + ' ' + dir).page(params[:page])
   end
 
   # GET /admin/messages/1

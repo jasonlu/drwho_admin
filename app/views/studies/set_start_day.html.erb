@@ -7,15 +7,15 @@
 
 <%= form_tag set_start_day_path, :method => :get, :id => "filter-form", :class => "form-inline" do %>
   <%= label_tag "search[name]", "姓名" %>
-  <%= text_field_tag "search[name]", params[:search][:name] %>
+  <%= text_field_tag "search[name]", @search[:name] %>
   <%= label_tag "search[serial_id]", "會員編號" %>
-  <%= text_field_tag "search[serial_id]", params[:search][:serial_id] %>
+  <%= text_field_tag "search[serial_id]", @search[:serial_id] %>
   <%= label_tag "search[date_start]", "開始日期" %>
-  <%= date_field_tag "search[date_start]", params[:search][:date_start] %>
+  <%= date_field_tag "search[date_start]", @search[:date_start] %>
   <%= label_tag "search[date_end]", "結束日期" %>
-  <%= date_field_tag "search[date_end]", params[:search][:date_end] %>
+  <%= date_field_tag "search[date_end]", @search[:date_end] %>
   <%= label_tag "search[no_date]", :class => "checkbox" do %>
-    <%= check_box_tag "search[no_date]", 1, params[:search][:no_date] %> 無日期
+    <%= check_box_tag "search[no_date]", 1, @search[:no_date] %> 無日期
   <% end %>
   <%= submit_tag("搜尋", :class => "btn") %>
 <% end %>

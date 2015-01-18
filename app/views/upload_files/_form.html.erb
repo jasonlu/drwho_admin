@@ -12,22 +12,12 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
+    <%= f.label :upload %><br>
+    <%= f.file_field :upload %>
   </div>
-  <div class="field">
-    <%= f.label :type %><br>
-    <%= f.text_field :type %>
-  </div>
-  <div class="field">
-    <%= f.label :path %><br>
-    <%= f.text_field :path %>
-  </div>
-  <div class="field">
-    <%= f.label :size %><br>
-    <%= f.number_field :size %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="row">
+    
+    <%= f.submit '上傳', class: "btn btn-primary span3" %>
+    <%= link_to '返回', upload_files_path, class: "btn span3" %>
   </div>
 <% end %>

@@ -31,6 +31,7 @@ gem "kaminari-bootstrap", "~> 0.1.3"
 gem "country_select", "1.2.0"
 gem "rubyzip", "< 1.0.0"
 gem "roo"
+gem "better_errors"
 
 group :development do  
   gem "seed_dump"
