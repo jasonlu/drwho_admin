@@ -36,7 +36,12 @@ class RecordsController < ApplicationController
       prepare_sorting
     end
 
-    params['search'] = Hash.new if params['search'].nil?
+    #params[:search] ||= Hash.new
+   
+    if !params[:search].is_a? Hash
+      params[:search] = Hash.new
+    end
+    
     @studies = Study.joins(:user => :user_profile).joins(:course => :category).
     select("
       CONCAT(user_profiles.lastname, user_profiles.firstname) as fullname,

@@ -19,7 +19,7 @@ module DrwhoAdmin
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    config.i18n.available_locales = [:"zh-TW"]
+    config.i18n.available_locales = [:"zh-TW", :en, :"zh_TW", :zh_tw]
     config.i18n.default_locale = :"zh-TW"
     config.cache_store = :dalli_store, 'localhost', { :namespace => "DrwonAdmin", :expires_in => 1.day, :compress => true }
     config.upload_path = "public/uploads"

@@ -49,7 +49,10 @@ class StudiesController < ApplicationController
 
   
   def set_start_day
-    params[:search] ||= Hash.new
+    unless params[:search].is_a? Hash
+      params[:search] = Hash.new
+    end
+
     @nav_section = "set_start_day"
     sort = params[:sort]
     dir = params[:dir]
@@ -71,8 +74,8 @@ class StudiesController < ApplicationController
     else
       sort = 'starts_at'
     end
-    @search = Hash.new
-    @search = params[:search] if params[:search].is_a? Hash
+    
+    @search = params[:search]
     
     @studies = Study.
       joins(:course => :category).

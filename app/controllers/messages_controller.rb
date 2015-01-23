@@ -36,7 +36,7 @@ class MessagesController < ApplicationController
     @receiver_users = nil
     if @receivers.include?('everyone')
       #@receiver_users.push(User.everyone)
-      @receiver_users = User.everyone
+      @receiver_users = User.all
     else
       @receivers.each do |receiver| 
         @receiver_users = User.send(receiver)
