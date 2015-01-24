@@ -27,10 +27,14 @@ class CoursesController < ApplicationController
     @course.start_at = "2000-01-01 00:00:00"
     @course.end_at = @course.start_at
     @course.save
-    redirect_to courses_url, notice: 'Course was successfully hide.'
+    redirect_to courses_url, notice: t("hide_course_successful")
   end
 
   def unhide
+    @course.start_at = DateTime.now
+    @course.end_at = DateTime.now + 10.years
+    @course.save
+    redirect_to courses_url, notice: t("unhide_course_successful")
   end
 
   # GET /admin/courses/new
@@ -105,7 +109,7 @@ class CoursesController < ApplicationController
   # PATCH/PUT /admin/courses/1
   def update
     if @course.update(course_params)
-      redirect_to courses_url, notice: 'Course was successfully updated.'
+      redirect_to courses_url, notice: t("update_course_successful")
     else
       render action: 'edit'
     end
@@ -114,7 +118,7 @@ class CoursesController < ApplicationController
   # DELETE /admin/courses/1
   def destroy
     @course.destroy
-    redirect_to courses_url, notice: 'Course was successfully destroyed.'
+    redirect_to courses_url, notice: t("delete_course_successful")
   end
 
   private
